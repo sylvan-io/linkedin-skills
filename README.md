@@ -57,6 +57,28 @@ linkedin-skills/
 
 
 
+## 构建个性化内容
+
+所有写作类技能（Post Writer、Comment Drafter、Reply Handler、Repurposer）在起草前都会读取以下两个文件。填好后，你不必在每次对话中重复描述自己的风格和经历。
+
+### Voice & Brand Profile — `references/voice-profile.md`
+
+定义你的写作声音指纹：句子节奏、标志性开头、标点习惯、常用词/禁用词、emoji 风格、hard rules、CTA 方式，以及 2-4 句最能代表你的 signature examples。
+
+**生成方式**：
+- **自动**：给 `linkedin-humanizer`（声音画像子模式）粘贴 3-6 篇你写过的真实 LinkedIn 帖子/评论，它会从样本中提取指纹并写入文件，自动把 `filled` 置为 `yes`。
+- **手动**：直接编辑 `references/voice-profile.md`，按模板填写 §1-5，再把 `filled: no` 改成 `filled: yes`。
+
+### Story Bank — `references/story-bank.md`
+
+你的内容弹药库：具体数字、 shipped 项目、转折点、伤疤、你愿意捍卫的立场、能公开提及的名字和禁区。写作技能在需要论据时直接从中取材，不再编造或反复询问。
+
+**生成方式**：
+- **自动**：运行 `linkedin-interviewer`，它会按 timeline → receipts → shipped → turning points → scars → positions 的结构采访你，完成后写入文件并置 `filled: yes`。
+- **手动**：直接编辑 `references/story-bank.md` 逐项填写，注意数字必须带时间、人数、度量单位（"部署时间从 22 分钟降到 9 分钟，四人团队，2025 Q2"）。
+
+**安全提示**：这两个文件含个人职业信息，填写前建议将它们加入 `.gitignore`，避免 push 到公开仓库时泄露。
+
 ## 调用案例（每个技能怎么说）
 
 在对话中直接说下面的触发语即可；需要内容的技能会向你索要粘贴文本或截图（安装后也可输入 `/` 或 `@` 技能名直接调用）。每个技能在你确认后都会交付复制粘贴块（或清单/报告），发布动作由你手动完成。
