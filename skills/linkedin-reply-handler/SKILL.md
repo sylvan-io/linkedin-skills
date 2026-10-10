@@ -21,7 +21,7 @@ Drafts a reply in one of three modes: (1) a reply to a specific LinkedIn comment
 **DM (direct message):**
 - User pastes a LinkedIn DM conversation (text or screenshots) and says "reply to this DM", "draft a response to Alice", "what should I message Bob", or "continue this conversation"
 - User wants a reply that accounts for what was already discussed, promised, or ruled out earlier in the same DM thread
-- A comment thread is older than 72 hours and a skill (typically `linkedin-thread-monitor`) suggested moving to DM: this skill then drafts the FIRST DM. Nothing is archived in that run — no DM thread exists yet. Archiving starts on the next run, when the user pastes back the real conversation
+- A comment thread is older than 72 hours and a skill (typically `linkedin-thread-monitor`) suggested moving to DM: this skill then drafts the FIRST DM. Only the DM session file is skipped in that run (no conversation exists yet); the counterpart's connection profile is still detected and archived in step 2 as usual. DM archiving starts on the next run, when the user pastes back the real conversation
 
 Not for:
 - Commenting on someone else's post (not replying to comments on the user's own post) → `linkedin-comment-drafter`
@@ -52,7 +52,7 @@ Not for:
 - A short context readout: open items carried from earlier in the thread, any promises the user made and has not closed, dead-end topics to avoid reopening (one line each; if the thread is brand new, say so)
 - 1-2 DM drafts, matching the counterpart's register and the thread's existing language and length (DMs are conversational: shorter than comments, no post-style hooks)
 - Approval → on user "send", one copy-paste block with the message text and the manual steps: open the LinkedIn message thread, paste, send
-- Silent archive status line before the drafts (new / duplicates / rolled into summary); in a first-DM run, state that no archive was created yet
+- Silent archive status line before the drafts (new / duplicates / rolled into summary); in a first-DM run, state that no DM archive was created yet (the connection-profile status line still applies)
 
 ## Steps — single comment
 
@@ -105,7 +105,7 @@ Same voice-profile-first rule applies. Then:
 Same voice-profile-first rule applies. Then:
 
 1. **Collect the DM thread.** Ask the user to paste the conversation, or screenshot it and read the screenshots with `Read`. Keep sender labels (counterpart name vs the user) and timestamps with every message; if a screenshot crops them, transcribe what is visible and mark the rest as undated rather than guessing. Identify the counterpart (name, ideally title/company). If the user has not said who the thread is with and the pasted content does not show it, ask before archiving — never create a DM file under a guessed key. Group chats are out of scope: one counterpart per DM archive.
-   - **First-DM exception**: when this run is a dormant-thread conversion (no DM exists yet, the user only wants the opener drafted), skip steps 3-4 entirely: draft from the public-thread context the user provides, and do not create `{key}-dms.md` or touch the index `DM` column.
+   - **First-DM exception**: when this run is a dormant-thread conversion (no DM exists yet, the user only wants the opener drafted), skip steps 3-4 entirely: draft from the public-thread context the user provides, and do not create `{key}-dms.md` or touch the index `DM` column. The exception covers the DM session file ONLY — step 2 (connection detect & archive) still runs in full, because the counterpart's identity (name, title, company) is already known; a screenshot of their profile is enough to archive.
    - **Opener seam**: when an existing pasted thread seems to start with the counterpart's reply and the user's own opener is missing, ask the user to paste the opener too before archiving. Never reconstruct it from memory or paraphrase — the archive starts from what is actually provided.
 
 2. **Connection detect & archive** (auto-substep, same as comment modes). Generate the counterpart's connection key per bundle rules, read `../../references/connections/index.md`, create or merge `../../references/connections/{key}.md` exactly as in single-comment mode. Skip silently only if the counterpart is the user themselves.
@@ -176,7 +176,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 - Never invent prior context that is not in the archive. If the thread is new and short, draft from what is there; if history seems missing, ask the user to paste more before promising continuity.
 - Never send for the user. Delivery is always a copy-paste block into LinkedIn Messaging.
 - One counterpart per archive. Group chats and unnamed senders are not archived: ask the user to identify the counterpart first, then proceed.
-- A dormant-thread conversion drafts the opener but creates no DM file and sets no index date; archiving begins only when the real thread is pasted back.
+- A dormant-thread conversion drafts the opener but creates no DM file and sets no index `DM` date; the connection profile from step 2 is still archived. DM archiving begins only when the real thread is pasted back.
 - Keep `{key}-dms.md` bounded at roughly 3-8 KB for mature threads: run rollover whenever the Full Text window overflows OR approaches ~8 KB (long messages), and never update archive dates or the index column on an all-duplicate paste.
 
 ## Examples

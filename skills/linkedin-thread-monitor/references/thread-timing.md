@@ -38,7 +38,7 @@ Different metric — how fast the USER replies to comments on their own posts:
 
 ## Rule: when thread dies, switch to DM
 
-If a thread is dormant (>72h since the last turn) but the counterpart was high-quality, don't reply in thread — the post won't surface their notification. Instead, route to `linkedin-reply-handler` DM mode to draft the FIRST DM (the archive starts only once the real DM thread exists and is pasted back). The message should follow this shape:
+If a thread is dormant (>72h since the last turn) but the counterpart was high-quality, don't reply in thread — the post won't surface their notification. Instead, route to `linkedin-reply-handler` DM mode to draft the FIRST DM (the DM archive starts only once the real DM thread exists and is pasted back; the counterpart's connection profile is archived immediately in that run). The message should follow this shape:
 
 ```
 [Name] — circling back on our thread about [specific topic from thread].
