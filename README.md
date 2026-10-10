@@ -133,6 +133,10 @@ linkedin-skills/
 
 > 注：技能无需安装也可在任务中直接使用；安装后平台会记住调用参数，便于下次复用。
 
+## 致谢与来源
+
+本项目基于 [sergebulaev/linkedin-skills](https://github.com/sergebulaev/linkedin-skills) 二次开发，上游 MIT License, Copyright (c) 2026 Sergey Bulaev。
+
 ## 许可
 
-MIT。上游知识与数据出处：arXiv 2501.16450（360Brew 算法研究）、AuthoredUp 2026 触达数据、MagicPost 厂商数据等，均保留在各 reference 文件内。
+MIT。本项目同样以 MIT 许可证发布，保留原作者版权声明，详见 [LICENSE](./LICENSE)。上游知识与数据出处：arXiv 2501.16450（360Brew 算法研究）、AuthoredUp 2026 触达数据、MagicPost 厂商数据等，均保留在各 reference 文件内。
