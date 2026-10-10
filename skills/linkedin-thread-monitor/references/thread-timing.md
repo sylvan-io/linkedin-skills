@@ -10,8 +10,7 @@
 | 6-24h | no author reply | Cold — skip | — |
 | 24-72h | author replied recently | Cool — respond within 4h | Medium |
 | 24-72h | no author reply | Dormant | — |
-| >72h | author replied within last 72h | Cool — the reply is fresh; respond within 4h in thread | Medium |
-| >72h | no reply in last 72h | Dormant — switch to DM | Medium (if inbound-quality) |
+| >72h | any | Dormant — switch to DM | Medium (if inbound-quality) |
 
 ## The warm-reply window explained
 
@@ -38,7 +37,7 @@ Different metric — how fast the USER replies to comments on their own posts:
 
 ## Rule: when thread dies, switch to DM
 
-If a thread is dormant (>72h since the last turn) but the counterpart was high-quality, don't reply in thread — the post won't surface their notification. Instead, route to `linkedin-reply-handler` DM mode to draft the FIRST DM (the archive starts only once the real DM thread exists and is pasted back). The message should follow this shape:
+If a thread is dormant (>72h since last turn) but the counterpart was high-quality, don't reply in thread — the post won't surface their notification. Instead, draft a DM:
 
 ```
 [Name] — circling back on our thread about [specific topic from thread].

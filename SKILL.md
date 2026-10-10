@@ -87,12 +87,12 @@ thousands without context bloat.
 DM threads live in **sibling files** named `{key}-dms.md`, never inside the
 connection profile itself: a long conversation would otherwise bloat the
 1–5 KB profile file and break the constant loading cost. DM files use hybrid
-storage (rolling summary + full recent messages, see **DM archive** below)
-and target 3–8 KB for mature threads. They are read only when the user is
-actively working on a DM with that person. The index's `DM` column shows
-which connections have a DM archive without opening any of those files.
+storage (rolling summary + full recent messages, see §DM archive below) and
+stay at a predictable 3–8 KB. They are read only when the user is actively
+working on a DM with that person. The index's `DM` column shows which
+connections have a DM archive without opening any of those files.
 
-**Persistent stores in this bundle, each holding a different kind of knowledge:**
+**Three persistent files in this bundle, each holding a different kind of knowledge:**
 
 | File | Holds | Written by | Read by |
 |---|---|---|---|
@@ -111,7 +111,7 @@ which connections have a DM archive without opening any of those files.
 Experience → append (role changes are historical facts). Engagement history →
 append-only with dedup on (date + event). Topics → union old + new keywords.
 
-**DM archive**
+### DM archive
 
 `{key}-dms.md` stores one conversation thread per connection using **hybrid
 storage**: a rolling summary of older messages plus the most recent 20
@@ -120,8 +120,7 @@ phrasing, pacing, emoji use and open questions so a drafted reply matches the
 live thread; the summary keeps long-term context (topics, decisions,
 follow-ups) without unbounded file growth.
 
-**File layout** (created on first real DM thread with a connection — not when
-a first-DM opener is merely being drafted):
+**File layout** (created on first DM with a connection):
 
 - `## Metadata` — partner name + key, last-archive date, total message count
   (`N full-text + M summarized`), last 5 topic tags
@@ -135,41 +134,33 @@ a first-DM opener is merely being drafted):
 **Why hybrid, not summary-only or full-only**: summary-only loses the tone
 and exact wording needed to draft a reply that sounds like the same
 conversation; full-only grows without limit and eventually costs more context
-than the thread is worth. A mature thread lands at roughly 3–8 KB; brand-new
-short threads are smaller by definition.
+than the thread is worth. The split keeps the file at 3–8 KB at any age.
 
 **Window size**: 20 messages by default. Raise to 30 for an active
 negotiation thread if the user asks; keep at 10 for low-frequency contacts.
-The window is a count target, not a size license: if Full Text approaches
-~8 KB with long messages, roll more of the oldest messages into the summary
-even before hitting the count, so the file stays bounded.
 
-**Dedup**: every incoming pasted batch is first de-duplicated against itself
-(overlapping screenshots repeat messages), then each surviving message is
-keyed `(sender + approximate date + first 100 chars, whitespace/case-normalized)`
-and matched against stored messages; hits are skipped silently. Metadata
-dates and the index `DM` column move only when at least one message is new.
-After archiving, report one line: `[DM archived for {key}: 3 new, 0 duplicate,
-2 rolled into summary (total N messages)]`.
+**Dedup**: every incoming pasted message is keyed
+`(sender + approximate date + first 100 chars, whitespace/case-normalized)`.
+Hits against stored messages are skipped silently. Screenshots that overlap
+across capture boundaries dedup the same way. After archiving, report one
+line: `[DM archived for {key}: 3 new, 0 duplicate, 2 rolled into summary
+(total N messages)]`.
 
-**Rollover**: when Full Text exceeds the window or the ~8 KB size ceiling, the
-oldest messages leave the full-text section and are converted into Timeline
-bullets (merge adjacent same-day exchanges into one bullet), their topics fold
-into the Metadata tags, any asks/promises move to Open Items, and threads both
-sides have clearly moved away from are logged under Dead Ends. The summary is
-rewritten, never just appended, so it stays compact.
+**Rollover**: when Full Text exceeds the window, the oldest messages leave
+the full-text section and are converted into Timeline bullets (merge adjacent
+same-day exchanges into one bullet), their topics fold into the Metadata
+tags, and any asks/promises move to Open Items. The summary is rewritten,
+never just appended, so it stays compact.
 
 **Backfill**: when the user pastes older history for the first time, messages
-older than the window go straight into the Rolling Summary as new Timeline
-bullets inserted in chronological position; existing bullets and Full Text
-messages are never rewritten or reordered.
+older than the window go straight into the Rolling Summary in chronological
+position; existing content is never rewritten or reordered.
 
-**DM writers / readers**: `linkedin-reply-handler` DM mode writes, as an
-auto-substep before drafting (same detect-archive-then-load rhythm as comment
-modes), and reads: Rolling Summary first to align open items and avoid dead
-ends, then the Full Text window for tone. No other skill loads DM files. A
-dormant-comment-to-DM conversion run drafts the opener but writes nothing
-here — archiving starts when the real conversation is pasted back.
+**Who writes**: `linkedin-reply-handler` DM mode only, as an auto-substep
+before drafting (same detect-archive-then-load rhythm as comment modes).
+**Who reads**: the same mode — Rolling Summary first to align open items and
+avoid dead ends, then the Full Text window for tone. No other skill loads DM
+files.
 
 **Who writes** (auto-detect + archive before drafting):
 - `linkedin-comment-drafter` — the post author
