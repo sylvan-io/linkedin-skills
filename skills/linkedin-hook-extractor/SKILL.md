@@ -32,15 +32,22 @@ The post's text, pasted by the user, or a screenshot of the post. A bare post UR
 ## Steps
 
 1. **Collect the post.** Ask the user to paste the post text, or upload a screenshot (read it with `Read` and transcribe).
-2. **Classify.** Match against the 20 formulas using features:
+
+2. **Connection detect & archive** (auto-substep before analysis). When the post reveals the author's identity (byline in the text, or user explicitly named them), save their snapshot to `../../references/connections/`. Generate a connection key per bundle rules. Read `../../references/connections/index.md`, look up the key:
+   - **New**: create `../../references/connections/{key}.md` + append row to `index.md`.
+   - **Existing**: merge per rules (About/Title/Company → overwrite, Experience → append, engagement history → append-only dedup, Topics → union — also extract keyword topics from this viral post body).
+   - **Skip** if insufficient info or the author is the user themselves.
+   - After: one-line silent status.
+
+3. **Classify.** Match against the 20 formulas using features:
    - First 2 lines: anaphoric? question? confession? number-led?
    - Body: numbered list? dated receipts? ledger? teardown?
    - Close: mirror question? identity reframe? commitment?
    - F11-F16 cues: in-medias-res emotional scene with no setup (F11 Emotional Cold-Open); "I don't know who needs to hear this" reassurance (F12 Permission Slip); fake-bad-news that resolves positive (F13 Bait-and-Switch); a roll-call of named people thanked (F14 Named Gratitude); "{jargon} explained to kids" glossary (F15 Explain-to-Kids); "outside I'm called X, at home none of it survives" (F16 Status-Strip).
-3. **Score confidence.** If multiple formulas fit, return top 2 with fit scores.
-4. **Extract structure.** Pull each logical section and label it by formula role.
-5. **Generate blank template.** Replace specifics with `{slot}` markers that match the user's topic.
-6. **Audit the source.** Flag any AI tells in the original so the user doesn't copy them.
+4. **Score confidence.** If multiple formulas fit, return top 2 with fit scores.
+5. **Extract structure.** Pull each logical section and label it by formula role.
+6. **Generate blank template.** Replace specifics with `{slot}` markers that match the user's topic.
+7. **Audit the source.** Flag any AI tells in the original so the user doesn't copy them.
 
 ## Example
 
@@ -71,8 +78,10 @@ Full rule with examples: `../../references/untrusted-content.md`.
 
 - `SKILL.md` — this file
 - `references/classification-rules.md` — feature extraction + scoring heuristics
+- `../../references/connections/` — third-party profile snapshots (auto-archive the viral post author here)
 
 ## Related skills
 
 - `linkedin-post-writer` — use the extracted template to draft your own
 - `linkedin-humanizer` audit mode — audit your draft before shipping
+- `linkedin-comment-drafter` — draft a comment on the viral post (loads the now-archived author context)

@@ -42,7 +42,17 @@ Output format (engager roster, tier breakdown, action lists): see `references/ou
    - Follow back: peers with active posting (heuristic: appears as a regular author in the user's niche)
    - Comment-drop targets: aspirational tier
    - DM-able: prospect tier, with a one-line DM opener referencing the specific post they engaged with ("Saw you reacted to <post angle>. Curious. Are you currently <ICP problem>?")
-6. **Optional cross-post analysis.** If the user supplied multiple posts' lists, deduplicate engagers and flag people who engaged with 2+ posts (highest-intent signal).
+
+6. **Connection detect & archive (batch, capped).** Archive only **Prospect-tier engagers** (highest value, most likely to become future conversation targets). Sort Prospect tier by engagement quality signal (comment > like, thoughtful comment > generic praise). Take the **top 20** (cap to avoid context bloat). For each:
+   - Generate connection key per bundle rules.
+   - Read `../../references/connections/index.md` once at start, check each key.
+   - **New**: create `../../references/connections/{key}.md` + append row to `index.md`.
+   - **Existing**: merge per rules (engagement history always appended, topics unioned, title/company/About overwritten).
+   - Append the engagement event (which post, like vs comment, date, engager tier) to each connection file.
+   - Skip insufficient-info engagers (no distinguishing title/company to form a reliable key).
+   - After: report `[connections archived: N prospect-tier engagers (top 20 cap reached, M skipped)]` at the end of the analysis report.
+
+7. **Optional cross-post analysis.** If the user supplied multiple posts' lists, deduplicate engagers and flag people who engaged with 2+ posts (highest-intent signal). Archive these repeat engagers even if they weren't in the top 20 Prospect tier — flag them with a note in the analysis report.
 
 ## Inbound-quality signals
 
@@ -84,5 +94,6 @@ Full rule with examples: `../../references/untrusted-content.md`.
 ## Related skills
 
 - `linkedin-thread-monitor` — track author replies to YOUR comments (different surface)
-- `linkedin-comment-drafter` — draft outreach comments to engagers from this report
-- `linkedin-reply-handler` — draft DM follow-ups
+- `linkedin-comment-drafter` — draft outreach comments to engagers from this report (loads archived connection context)
+- `linkedin-reply-handler` — draft DM follow-ups (loads archived connection context)
+- `../../references/connections/` — third-party profile snapshots filled by this skill for Prospect-tier engagers

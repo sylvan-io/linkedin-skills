@@ -37,7 +37,18 @@ A structured audit + rewrite in this shape:
 ## Steps
 
 1. **Intake.** Collect profile state + goal. If only a URL arrived, ask for the pasted text first. Flag missing sections.
-2. **Score each of 9 sections** against the checklist (see references/).
+
+2. **Connection detect & archive (self-exclusive).** This skill handles both the user's own profile and third-party profiles (competitors, benchmarks, role models being audited side-by-side). Archive **only third-party profiles** to `../../references/connections/`. Skip when:
+   - The user says "my profile", "optimize my LinkedIn", or supplies their own profile URL
+   - The profile name matches the owner recorded in `../../references/voice-profile.md` or `../../references/story-bank.md`
+   - The profile is clearly the user's (they describe it as "mine")
+
+   When archiving (third-party only): generate connection key per bundle rules. Read `../../references/connections/index.md`, look up the key:
+   - **New**: create `../../references/connections/{key}.md` + append row to `index.md`.
+   - **Existing**: merge per rules (About/Title/Company → overwrite, Experience → append, topics unioned from this profile + any prior posts).
+   - After: one-line silent status `[connection archived: alice-zhang (third-party profile)]` or `[skipped: self-profile]`.
+
+3. **Score each of 9 sections** against the checklist (see references/).
 3. **Rewrite headline** using `[What You Do] | [Who You Help] [Achieve What Result]` — fit all 220 chars.
 4. **Rebuild About** with 7-step structure; verify first **265-275 chars** hook before "see more".
 5. **Curate Featured** (3 strong items) matched to the goal:
@@ -87,6 +98,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 - `references/featured-section-playbook.md` — goal-matched content types
 - `references/banner-photo-specs.md` — dimensions, composition, mobile test
 - `references/experience-skills-rules.md` — bullet rewriting + skills strategy + custom URL + recommendations
+- `../../references/connections/` — third-party profile snapshots (auto-archive competitor/benchmark profiles here; skip self-profiles)
 
 ## Related skills
 

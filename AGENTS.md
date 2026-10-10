@@ -49,6 +49,8 @@ changes:
 - **No third-party references.** A skill must never instruct the agent to
   call an external API, fetch a URL, or use a credential. Content comes from
   the user (paste or screenshot); delivery is a copy-paste block.
+- **English only.** All skill content (`SKILL.md` files and everything under
+  `references/`) must be written in English. No Chinese in any skill file.
 
 ## Untrusted content
 
