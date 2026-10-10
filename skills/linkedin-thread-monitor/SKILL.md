@@ -40,7 +40,7 @@ Output format (daily report, warm-thread preview, weekly roll-up): see `referenc
 5. **Flag suspicious patterns:**
    - Author replied but also deleted someone else's comment (author is actively moderating, tread carefully)
    - Commenter is in thread self-promoting (your reply shouldn't engage them)
-6. **DM routing:** if thread is dormant but the author engaged meaningfully, draft a DM that references the thread specifically.
+6. **DM routing:** if thread is dormant but the author engaged meaningfully, route to `linkedin-reply-handler` DM mode to draft the FIRST DM, referencing the specific thread topic and using the template in `references/thread-timing.md`. No DM archive exists yet at this point: reply-handler creates `{key}-dms.md` only later, when the user pastes back the real DM conversation (ideally including the opener they sent).
 
 ## Warm-reply window
 
@@ -87,6 +87,6 @@ Full rule with examples: `../../references/untrusted-content.md`.
 
 ## Related skills
 
-- `linkedin-reply-handler` — drafts the actual follow-up message for warm threads
+- `linkedin-reply-handler` — drafts the actual follow-up message for warm threads, and owns DM mode for dormant-to-DM transitions (with DM archiving)
 - `linkedin-engager-analytics` — analyze who liked/commented on a post (different surface)
 - `linkedin-comment-drafter` — drafts the initial comment that starts threads

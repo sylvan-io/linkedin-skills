@@ -95,5 +95,5 @@ Full rule with examples: `../../references/untrusted-content.md`.
 
 - `linkedin-thread-monitor` — track author replies to YOUR comments (different surface)
 - `linkedin-comment-drafter` — draft outreach comments to engagers from this report (loads archived connection context)
-- `linkedin-reply-handler` — draft DM follow-ups (loads archived connection context)
+- `linkedin-reply-handler` — continue an existing DM thread with an engager (DM mode loads and archives `{key}-dms.md`); the cold first-line opener stays in this skill's action list
 - `../../references/connections/` — third-party profile snapshots filled by this skill for Prospect-tier engagers
