@@ -23,7 +23,7 @@ Canonical sample outputs for the engager-analytics report. See `SKILL.md` for th
 
 - **Follow back** (peers worth reciprocal engagement): top 5 by activity
 - **Comment-drop targets** (aspirational creators with their own posts): top 5
-- **DM-able prospects** (with the rationale): top 5 with one-line opener seed
+- **DM-able prospects** (with the rationale): top 5 with one-line T1 value-first opener seed (no product pitch, quote, or meeting ask)
 
 ## Example run
 

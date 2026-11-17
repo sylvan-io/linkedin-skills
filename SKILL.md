@@ -15,30 +15,33 @@ Resolve the persistent-store paths once at the start of every `linkedin-marketin
 
 1. If the current session is an AGENT project session, use the project root reported by the host agent and read `<project-root>/AGENT.md` when that file exists. Only the singular filename `AGENT.md` is the configuration file; do not substitute `AGENTS.md`.
 2. If the session is not in an AGENT project session, or the project root has no `AGENT.md`, use the defaults below.
-3. AGENT.md may specify the three store locations in a YAML block namespaced to this bundle:
+3. AGENT.md may specify the four store locations in a YAML block namespaced to this bundle:
 
 ```yaml
 linkedin-marketing:
   connections_dir: linkedin/connections
   story_dir: linkedin
   voice_dir: linkedin
+  outreach_dir: linkedin/outreach
 ```
 
 4. Paths may be absolute or relative. Resolve relative paths against the project root, never against the skill directory or the caller's current working directory.
 5. If the `linkedin-marketing` block is absent, or a key is omitted or blank, use that store's default. If the block is malformed, use all defaults and mention the invalid configuration once.
-6. `connections_dir`, `story_dir`, and `voice_dir` are directories. Resolve the files inside them with fixed filenames:
+6. `connections_dir`, `story_dir`, `voice_dir`, and `outreach_dir` are directories. Resolve the files inside them with fixed filenames:
    - Connection index: `<CONNECTIONS_DIR>/index.md`
    - Connection snapshots: `<CONNECTIONS_DIR>/{key}.md`
    - DM archives: `<CONNECTIONS_DIR>/{key}-dms.md`
    - Story Bank: `<STORY_BANK_FILE>` = `<STORY_DIR>/story-bank.md`
    - Voice profile: `<VOICE_PROFILE_FILE>` = `<VOICE_DIR>/voice-profile.md`
    - Voice rules: `<VOICE_RULES_FILE>` = `<VOICE_DIR>/voice-rules.md`
+   - Outreach playbook: `<OUTREACH_DIR>/` holds `README.md`, `nurture-sequence.md`, and `scenarios/index.md`, `scenarios/_template.md`, plus scenario pack files
 
 | Resolved name | AGENT.md key | Default |
 |---|---|---|
 | `CONNECTIONS_DIR` | `connections_dir` | `<bundle-root>/references/connections/` |
 | `STORY_DIR` | `story_dir` | `<bundle-root>/references/` |
 | `VOICE_DIR` | `voice_dir` | `<bundle-root>/references/` |
+| `OUTREACH_DIR` | `outreach_dir` | `<bundle-root>/references/outreach/` |
 | `STORY_BANK_FILE` | project-first | Project `<project-root>/linkedin/story-bank.md` if present; otherwise `<bundle-root>/references/story-bank.md` |
 | `VOICE_PROFILE_FILE` | project-first | Project `<project-root>/linkedin/voice-profile.md` if present; otherwise `<bundle-root>/references/voice-profile.md` |
 | `VOICE_RULES_FILE` | derived from `voice_dir` | `<VOICE_DIR>/voice-rules.md` |
@@ -54,6 +57,8 @@ The Story Bank and Voice Profile are personal documents. Resolve and write them 
 If both a project file and a bundle file exist, the project file wins. Never merge, copy, or synchronize the two automatically. A generator must write only to the resolved target and report which file it updated.
 
 This project-first exception is intentional and applies only to the Story Bank and Voice Profile. For connections, use the configured `CONNECTIONS_DIR` and do not redirect user data. If `VOICE_RULES_FILE` is missing, use this bundle's canonical `references/voice-rules.md` for the current run and tell the user to re-run `linkedin-project-initializer`.
+
+The outreach playbook is reusable methodology, not a personal document. If AGENT.md supplies `outreach_dir` and that directory exists, read it; otherwise use the bundle default `<bundle-root>/references/outreach/`. A project copy wins when present; never merge or synchronize project and bundle packs automatically.
 
 If the resolved target file for a personal document does not exist, initialize it from the matching template in this bundle on first write and create parent directories as needed. If that path cannot be read or written, stop the operation and tell the user; do not silently write to the other location.
 
@@ -152,6 +157,7 @@ which connections have a DM archive without opening any of those files.
 | `VOICE_RULES_FILE` | canonical editing and formatting rules | `linkedin-project-initializer` / user | every writing skill |
 | `CONNECTIONS_DIR` | third-party profile snapshots + interaction history | 5 skills (auto-write) | 3 skills (read on demand) |
 | `CONNECTIONS_DIR/{key}-dms.md` | third-party DM threads (summary + recent full text) | `linkedin-reply-handler` DM mode | `linkedin-reply-handler` DM mode |
+| `OUTREACH_DIR` | T1-T4 stage machine + scenario packs for one-to-one outreach | user / pack author | `linkedin-reply-handler` DM mode, `linkedin-engager-analytics` opener, `linkedin-comment-drafter` public touch |
 
 **Key generation** (dedup identifier per connection):
 
@@ -162,6 +168,18 @@ which connections have a DM archive without opening any of those files.
 **Merge rules on update**: About/Title/Company → overwrite (fresh snapshot).
 Experience → append (role changes are historical facts). Engagement history →
 append-only with dedup on (date + event). Topics → union old + new keywords.
+
+**`## Nurture` block** (outreach state, persisted on the profile file): records where the relationship sits in the T1-T4 sequence so later runs do not re-derive it. Fields:
+
+- `Stage`: T1 value, T2 expertise, T3 character-trust, T4 close, or `—` before any outreach
+- `Touches`: count of logged outreach touches
+- `Stage entered`: date the current stage began
+- `Active scenario`: scenario ID from the outreach registry, or `—`
+- `Status`: advanced / held / stalled / dropped
+- `Signals`: append-only list of dated trust or advancement signals
+- `Open promises`: promises or resources owed, each tagged `pending` / `done`
+
+**Nurture merge rules**: Stage → overwrite; Touches → increment on each logged touch; Stage entered → overwrite only when the stage changes; Active scenario → overwrite; Status → overwrite; Signals → append-only with dedup on (date + signal); Open promises → append new items, mark existing `done` when closed. The stage model and scenario registry live in `OUTREACH_DIR` (default `references/outreach/`).
 
 **DM archive**
 
@@ -315,7 +333,8 @@ Decode the `commentUrn` fragment to find which comment a permalink targets (this
 - `references/founder-topics.md` — founders-edition angle library (A1-A10)
 - `STORY_BANK_FILE` — the user's material bank (filled by `linkedin-interviewer`; default: `references/story-bank.md`)
 - `VOICE_PROFILE_FILE` — the user's voice fingerprint (filled by `linkedin-humanizer` profile mode; default: `references/voice-profile.md`)
-- `CONNECTIONS_DIR` — third-party profile snapshots + interaction history (auto-written, read on demand; default: `references/connections/`); `{key}-dms.md` sibling files hold DM threads (rolling summary + recent full text, reply-handler DM mode only)
+- `CONNECTIONS_DIR` — third-party profile snapshots + interaction history (auto-written, read on demand; default: `references/connections/`); `{key}-dms.md` sibling files hold DM threads (rolling summary + recent full text, reply-handler DM mode only); the `## Nurture` block on each profile persists outreach stage and scenario state
+- `OUTREACH_DIR` — one-to-one outreach playbook: T1-T4 stage machine (`nurture-sequence.md`) and pluggable scenario packs (`scenarios/`; default: `references/outreach/`)
 - `references/untrusted-content.md` — how to treat pasted third-party content
 
 ## Acknowledgments

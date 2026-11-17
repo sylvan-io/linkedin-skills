@@ -9,7 +9,7 @@ Bucket every liker and commenter on a LinkedIn post by ICP fit. Outputs a roster
 
 The engager list comes from the user: they paste it (or screenshot it) from the post page or their notifications. No scraping, no third-party services.
 
-> **Project stores:** Use `CONNECTIONS_DIR` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+> **Project stores:** Use `CONNECTIONS_DIR` and `OUTREACH_DIR` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
 
 ## When to use
 
@@ -43,14 +43,14 @@ Output format (engager roster, tier breakdown, action lists): see `references/ou
 5. **Produce action lists.**
    - Follow back: peers with active posting (heuristic: appears as a regular author in the user's niche)
    - Comment-drop targets: aspirational tier
-   - DM-able: prospect tier, with a one-line DM opener referencing the specific post they engaged with ("Saw you reacted to <post angle>. Curious. Are you currently <ICP problem>?")
+   - DM-able: prospect tier, with a one-line T1 opener referencing the specific post they engaged with. The opener is value-first per `<OUTREACH_DIR>/nurture-sequence.md` T1: a relevant observation or light helpful note, no product pitch, quote, or meeting ask. Example shape: "Saw you reacted to <post angle>. One thing I've noticed on that side is <useful observation>. Are you currently <ICP problem>?"
 
 6. **Connection detect & archive (batch, capped).** Archive only **Prospect-tier engagers** (highest value, most likely to become future conversation targets). Sort Prospect tier by engagement quality signal (comment > like, thoughtful comment > generic praise). Take the **top 20** (cap to avoid context bloat). For each:
    - Generate connection key per bundle rules.
    - Read `<CONNECTIONS_DIR>/index.md` once at start, check each key.
    - **New**: create `<CONNECTIONS_DIR>/{key}.md` + append row to `index.md`.
    - **Existing**: merge per rules (engagement history always appended, topics unioned, title/company/About overwritten).
-   - Append the engagement event (which post, like vs comment, date, engager tier) to each connection file.
+   - Append the engagement event (which post, like vs comment, date, engager tier) to each connection file. Initialize the `## Nurture` block to Stage T1 with Touches 0 on a new prospect profile; the first DM opener drafted for them counts as touch 1.
    - Skip insufficient-info engagers (no distinguishing title/company to form a reliable key).
    - After: report `[connections archived: N prospect-tier engagers (top 20 cap reached, M skipped)]` at the end of the analysis report.
 
@@ -69,6 +69,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 - Don't run engager analytics on posts you didn't write or aren't tracking with permission. High-volume scraping of someone else's audience reads as creepy — and this skill works from user-provided lists anyway, never from scraping.
 - Don't DM a prospect on the same day they engaged with your post. Wait 24-72h to avoid the "thirsty" pattern.
 - One DM opener per engager, not three. If the first didn't land in 5 business days, drop it.
+- The opener is a T1 value-first touch. Do not pitch the product, send a quote, or ask for a call in the first message; stage progression and scenario packs live in `<OUTREACH_DIR>/nurture-sequence.md` and `scenarios/`.
 
 ## Untrusted content
 
@@ -92,6 +93,7 @@ Full rule with examples: `../../references/untrusted-content.md`.
 
 - `SKILL.md` — this file
 - `references/output-spec.md` — engager roster shape, tier breakdown, action lists, sample run
+- `<OUTREACH_DIR>/nurture-sequence.md` — T1 value-first stance for the prospect opener and later stage progression
 
 ## Related skills
 
