@@ -1,6 +1,6 @@
 # LinkedIn Marketing Skills（零第三方依赖）
 
-面向 LinkedIn 内容运营的 12 个 Agent Skills 技能包：写帖子、写评论、回评论、去 AI 味、拆解爆款钩子、做一周内容计划、优化个人主页、团队员工倡导、跨平台改稿、素材采访等。
+面向 LinkedIn 内容运营的 13 个 Agent Skills 技能包：初始化项目空间、写帖子、写评论、回评论、去 AI 味、拆解爆款钩子、做一周内容计划、优化个人主页、团队员工倡导、跨平台改稿、素材采访等。
 
 这是一组**零第三方依赖**的 Agent Skills：不联网抓取、不自动发布、不调用任何外部 API。所有 LinkedIn 内容运营工作都在你与 agent 的对话中闭环完成。兼容豆包（Doubao）、Claude Code、Codex 及任何遵循 [Agent Skills 规范](https://agentskills.io/specification) 的平台。
 
@@ -16,6 +16,7 @@
 linkedin-skills/
 ├── SKILL.md                          # 总入口：技能路由、核心流程、语气规则、URL/URN 速查
 ├── skills/
+│   ├── linkedin-project-initializer/ # 初始化项目空间：默认目录、AGENT.md、starter 文件
 │   ├── linkedin-post-writer/         # 写帖子（20 种 2026 爆款钩子公式 + 创始人专属角度）
 │   ├── linkedin-comment-drafter/     # 评论他人帖子 / 转发带评
 │   ├── linkedin-reply-handler/       # 回复单条评论 / 批量清扫评论区 / 回复私信（DM）
@@ -32,17 +33,41 @@ linkedin-skills/
 └── LICENSE · SECURITY.md · AGENTS.md · .gitignore
 ```
 
-## 使用方式（统一流程）
+## 项目级配置（AGENT.md）
+
+当 `linkedin-marketing` 在 AGENT 项目模式下运行，根 `SKILL.md` 会先读取项目根目录的 `AGENT.md`。没有该文件、当前不是项目模式，或某个配置项未填写时，使用默认目录。
+
+可以调用 `linkedin-project-initializer` 自动生成默认目录、starter 文件和 `AGENT.md`。该技能可重复执行，并会保留已有非空数据与配置。
+
+在 `AGENT.md` 中加入以下 YAML 块即可把个人数据存放到项目内指定位置：
+
+```yaml
+linkedin-marketing:
+  connections_dir: linkedin/connections
+  story_dir: linkedin
+  voice_dir: linkedin
+```
+
+- 相对路径按**项目根目录**解析，不按技能目录解析。
+- `connections_dir` 存放 `index.md`、联系人档案和 `{key}-dms.md`。
+- `story_dir` 下使用固定文件名 `story-bank.md`。
+- `voice_dir` 下使用固定文件名 `voice-profile.md`。
+- 根技能在未指定时默认使用 `references/connections/`、`references/`、`references/`。
+- `linkedin-project-initializer` 生成的工程默认使用 `linkedin/connections/`、`linkedin/`、`linkedin/`，并把这些值显式写入 `AGENT.md`。
+- 如果覆盖了存储位置，请自行确保该目录不会被提交；默认路径已写入 `.gitignore`。
+
+## 内容技能使用方式（统一流程）
 
 1. **提供内容**：把要处理的 LinkedIn 内容粘贴进对话（帖子正文、评论、评论区、主页各段、互动者名单），或上传截图。
 2. **起草**：技能基于 2026 年算法与内容研究生成草稿。
 3. **确认**：你回复「可以 / post / 修改建议」，技能不会自动发布任何内容。
 4. **手动发布**：技能交付复制粘贴块（最终文案 + 目标链接 + 操作步骤），由你粘贴到 LinkedIn 完成发布。
 
-## 12 个技能一览
+## 13 个技能一览
 
 | 技能 | 作用 |
 |---|---|
+| **Project Initializer** | 初始化 LinkedIn 项目空间，生成 `AGENT.md`、默认目录、Connections 索引、Story Bank 与 Voice Profile 模板；可重复执行且不覆盖已有数据 |
 | **Post Writer** | 用 20 种经过验证的 2026 钩子公式（F1-F20，含创始人 A1-A10 角度）按互动目标写帖子 |
 | **Comment Drafter** | 基于你粘贴的帖子写 1-3 条评论变体，附反应建议与模板归因 |
 | **Reply Handler** | 回复单条评论、整段评论区批量清扫（过滤低质评论、正确处理 LinkedIn 两级线程扁平化），或基于完整历史记录回复私信（DM，自动存档 + 去重 + 滚动摘要） |
@@ -62,7 +87,7 @@ linkedin-skills/
 
 所有写作类技能（Post Writer、Comment Drafter、Reply Handler、Repurposer）在起草前都会读取以下两个文件。填好后，你不必在每次对话中重复描述自己的风格和经历。
 
-### Voice & Brand Profile — `references/voice-profile.md`
+### Voice & Brand Profile — 默认 `references/voice-profile.md`
 
 定义你的写作声音指纹：句子节奏、标志性开头、标点习惯、常用词/禁用词、emoji 风格、hard rules、CTA 方式，以及 2-4 句最能代表你的 signature examples。
 
@@ -70,7 +95,7 @@ linkedin-skills/
 - **自动**：给 `linkedin-humanizer`（声音画像子模式）粘贴 3-6 篇你写过的真实 LinkedIn 帖子/评论，它会从样本中提取指纹并写入文件，自动把 `filled` 置为 `yes`。
 - **手动**：直接编辑 `references/voice-profile.md`，按模板填写 §1-5，再把 `filled: no` 改成 `filled: yes`。
 
-### Story Bank — `references/story-bank.md`
+### Story Bank — 默认 `references/story-bank.md`
 
 你的内容弹药库：具体数字、 shipped 项目、转折点、伤疤、你愿意捍卫的立场、能公开提及的名字和禁区。写作技能在需要论据时直接从中取材，不再编造或反复询问。
 
@@ -80,12 +105,12 @@ linkedin-skills/
 
 **安全提示**：这两个文件含个人职业信息，填写前建议将它们加入 `.gitignore`，避免 push 到公开仓库时泄露。
 
-### Connections Archive — `references/connections/`
+### Connections Archive — 默认 `references/connections/`
 
 第三方联系人档案库：在互动过程中自动存档你粘贴的他人 LinkedIn 档案片段（姓名、职位、公司、About、经历、发帖主题），并在后续评论、回复、分析等场景中作为背景加载，提升内容的针对性与连贯性。
 
 **工作方式**：
-- **自动存档**：当你使用 Comment Drafter、Reply Handler、Engager Analytics、Hook Extractor、Profile Optimizer 等技能时，如果输入中包含他人档案信息，技能会自动将其存入 `references/connections/` 目录（每人一个 `.md` 文件 + 一个轻量索引 `index.md`）。已有条目会增量更新（About/职位/公司覆写，经历追加，互动历史只增不删）。
+- **自动存档**：当你使用 Comment Drafter、Reply Handler、Engager Analytics、Hook Extractor、Profile Optimizer 等技能时，如果输入中包含他人档案信息，技能会自动将其存入解析后的 `CONNECTIONS_DIR`（默认 `references/connections/`；每人一个 `.md` 文件 + 一个轻量索引 `index.md`）。已有条目会增量更新（About/职位/公司覆写，经历追加，互动历史只增不删）。
 - **自动读取**：在评论他人帖子或回复评论前，技能会先查 connections 索引——如果目标联系人已有档案，则加载其发帖主题、过往互动记录、当前职位等作为背景，避免重复上次聊过的话题、避免用过时的头衔称呼对方。
 - **无上限**：采用分片存储（每人独立文件 + 轻量索引），加载成本恒定约 5KB，与存档人数无关，支持上千联系人。
 
@@ -138,7 +163,7 @@ linkedin-skills/
 
 **通用使用方式**（适用于任何支持 Agent Skills 的 agent）：
 
-- **整包加载**：把仓库根目录 `linkedin-skills/` 交给 agent，根 `SKILL.md` 作为路由入口，可调用全部 12 个子技能；
+- **整包加载**：把仓库根目录 `linkedin-skills/` 交给 agent，根 `SKILL.md` 作为路由入口，可调用全部 13 个子技能；
 - **单技能加载**：只把 `skills/<技能名>/` 目录（如 `skills/linkedin-post-writer/`）交给 agent，单独使用该技能；
 - **直接引用**：不安装也可以——在对话中粘贴对应 `SKILL.md` 的内容，或让 agent 读取该文件，即可按其中的指令工作。
 

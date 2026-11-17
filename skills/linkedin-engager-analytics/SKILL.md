@@ -9,6 +9,8 @@ Bucket every liker and commenter on a LinkedIn post by ICP fit. Outputs a roster
 
 The engager list comes from the user: they paste it (or screenshot it) from the post page or their notifications. No scraping, no third-party services.
 
+> **Project stores:** Use `CONNECTIONS_DIR` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - After publishing a post: "Who actually engaged? Are they ICP?"
@@ -45,8 +47,8 @@ Output format (engager roster, tier breakdown, action lists): see `references/ou
 
 6. **Connection detect & archive (batch, capped).** Archive only **Prospect-tier engagers** (highest value, most likely to become future conversation targets). Sort Prospect tier by engagement quality signal (comment > like, thoughtful comment > generic praise). Take the **top 20** (cap to avoid context bloat). For each:
    - Generate connection key per bundle rules.
-   - Read `../../references/connections/index.md` once at start, check each key.
-   - **New**: create `../../references/connections/{key}.md` + append row to `index.md`.
+   - Read `<CONNECTIONS_DIR>/index.md` once at start, check each key.
+   - **New**: create `<CONNECTIONS_DIR>/{key}.md` + append row to `index.md`.
    - **Existing**: merge per rules (engagement history always appended, topics unioned, title/company/About overwritten).
    - Append the engagement event (which post, like vs comment, date, engager tier) to each connection file.
    - Skip insufficient-info engagers (no distinguishing title/company to form a reliable key).
@@ -96,4 +98,4 @@ Full rule with examples: `../../references/untrusted-content.md`.
 - `linkedin-thread-monitor` — track author replies to YOUR comments (different surface)
 - `linkedin-comment-drafter` — draft outreach comments to engagers from this report (loads archived connection context)
 - `linkedin-reply-handler` — continue an existing DM thread with an engager (DM mode loads and archives `{key}-dms.md`); the cold first-line opener stays in this skill's action list
-- `../../references/connections/` — third-party profile snapshots filled by this skill for Prospect-tier engagers
+- `<CONNECTIONS_DIR>/` — third-party profile snapshots filled by this skill for Prospect-tier engagers

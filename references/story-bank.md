@@ -10,9 +10,10 @@ from what you already told it once.
 
 > **Keep this out of git.** It holds career detail, figures, failures and named
 > people. It is a file in this repository, so a push carries it wherever you push,
-> a public fork included. Add `references/story-bank.md` to your `.gitignore`
-> before you fill it, or keep the filled copy outside the repo. Nothing here is
-> sent to us or to any service; git is the only way it travels.
+> a public fork included. Add the resolved `STORY_BANK_FILE` to your
+> `.gitignore` before you fill it, or relocate it through project-root
+> `AGENT.md` and keep that location untracked. Nothing here is sent to us or
+> to any service; git is the only way it travels.
 
 Fill it by running `linkedin-interviewer`, which interviews you and writes this
 file. You can also edit it by hand at any time; the skill reads whatever is here.

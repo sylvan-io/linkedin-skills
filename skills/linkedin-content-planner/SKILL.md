@@ -7,6 +7,8 @@ description: "Generate a 7-day LinkedIn content plan from a theme, audience, and
 
 Produce a 7-day LinkedIn plan built around the 3-pillar discipline (Authority 40-50%, Personal Narrative 30-40%, Community 20-30%). Optionally adds a Product/Offer pillar at 10-15%.
 
+> **Project stores:** Use `STORY_BANK_FILE` and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - User asks "plan my week" or "what should I post this week"
@@ -19,7 +21,7 @@ Produce a 7-day LinkedIn plan built around the 3-pillar discipline (Authority 40
 - **Audience description:** e.g., "B2B founders, AI ops leaders, marketing VPs"
 - **Pillar mix** (optional): defaults to 40% Authority / 30% Narrative / 20% Community / 10% Product
 - **Posting days** (optional): defaults to Tue/Wed/Thu/Fri (4 posts)
-- **Voice samples** (optional): only if `../../references/voice-profile.md` is not filled yet
+- **Voice samples** (optional): only if `<VOICE_PROFILE_FILE>` is not filled yet
 
 ## Output
 
@@ -99,9 +101,9 @@ Every formula earns a primary reaction: comments, reposts, likes, or saves (see 
 
 ## Steps
 
-**Story bank first.** If `../../references/story-bank.md` has `filled: yes`, load it before planning anything. The week's angles come from material that already exists: a dated turning point, a number with a named referent, a position the user holds and pays for. Planning a week against an empty bank is how a calendar fills with themes no draft can execute, so if the bank is not filled, say once that `linkedin-interviewer` fills it in 20 to 40 minutes, then plan from the theme the user gave.
+**Story bank first.** If `<STORY_BANK_FILE>` has `filled: yes`, load it before planning anything. The week's angles come from material that already exists: a dated turning point, a number with a named referent, a position the user holds and pays for. Planning a week against an empty bank is how a calendar fills with themes no draft can execute, so if the bank is not filled, say once that `linkedin-interviewer` fills it in 20 to 40 minutes, then plan from the theme the user gave.
 
-**Voice profile.** If `../../references/voice-profile.md` has `filled: yes`, load it and respect the CTA and link style it records when picking CTA types. If it is not filled, mention once that `linkedin-humanizer` profile mode can learn it from a few posts, then use the generic voice rules.
+**Voice profile.** If `<VOICE_PROFILE_FILE>` has `filled: yes`, load it and respect the CTA and link style it records when picking CTA types. If it is not filled, mention once that `linkedin-humanizer` profile mode can learn it from a few posts, then use the generic voice rules.
 
 1. Gather inputs. Ask user for theme, audience, pillar preferences if not provided.
 2. Validate pillar mix sums to 100%; warn if any pillar >60%.
@@ -125,8 +127,8 @@ See `references/example-plan-week.md` for a filled-in 7-day plan.
 - `references/example-plan-week.md` — worked example
 - `references/pillars-framework.md` — the 3-pillar discipline explained
 - `../../references/founder-topics.md` — founders-edition angle library (A1-A10) and founder pillar set
-- `../../references/story-bank.md` — the material the week's angles are drawn from
-- `../../references/voice-profile.md` — voice fingerprint and CTA style
+- `<STORY_BANK_FILE>` — the material the week's angles are drawn from
+- `<VOICE_PROFILE_FILE>` — voice fingerprint and CTA style
 
 ## Related skills
 

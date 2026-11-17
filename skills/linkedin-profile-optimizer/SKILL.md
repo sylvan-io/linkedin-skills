@@ -7,6 +7,8 @@ description: "Audit and rewrite a LinkedIn profile end-to-end for 2026: headline
 
 Audit the nine components of a LinkedIn profile (photo, banner, headline, About, Featured, Experience, Skills, custom URL, recommendations) against 2026 best practices, then rewrite each section that needs it. Optimized profiles get ~3.9x more views and convert visitors 3-5x better than default/resume-style profiles.
 
+> **Project stores:** Use `CONNECTIONS_DIR`, `STORY_BANK_FILE`, and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - User asks for an audit and pastes their profile text (a bare URL is not readable, see Input)
@@ -38,13 +40,13 @@ A structured audit + rewrite in this shape:
 
 1. **Intake.** Collect profile state + goal. If only a URL arrived, ask for the pasted text first. Flag missing sections.
 
-2. **Connection detect & archive (self-exclusive).** This skill handles both the user's own profile and third-party profiles (competitors, benchmarks, role models being audited side-by-side). Archive **only third-party profiles** to `../../references/connections/`. Skip when:
+2. **Connection detect & archive (self-exclusive).** This skill handles both the user's own profile and third-party profiles (competitors, benchmarks, role models being audited side-by-side). Archive **only third-party profiles** to `<CONNECTIONS_DIR>/`. Skip when:
    - The user says "my profile", "optimize my LinkedIn", or supplies their own profile URL
-   - The profile name matches the owner recorded in `../../references/voice-profile.md` or `../../references/story-bank.md`
+   - The profile name matches the owner recorded in `<VOICE_PROFILE_FILE>` or `<STORY_BANK_FILE>`
    - The profile is clearly the user's (they describe it as "mine")
 
-   When archiving (third-party only): generate connection key per bundle rules. Read `../../references/connections/index.md`, look up the key:
-   - **New**: create `../../references/connections/{key}.md` + append row to `index.md`.
+   When archiving (third-party only): generate connection key per bundle rules. Read `<CONNECTIONS_DIR>/index.md`, look up the key:
+   - **New**: create `<CONNECTIONS_DIR>/{key}.md` + append row to `index.md`.
    - **Existing**: merge per rules (About/Title/Company → overwrite, Experience → append, topics unioned from this profile + any prior posts).
    - After: one-line silent status `[connection archived: alice-zhang (third-party profile)]` or `[skipped: self-profile]`.
 
@@ -98,7 +100,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 - `references/featured-section-playbook.md` — goal-matched content types
 - `references/banner-photo-specs.md` — dimensions, composition, mobile test
 - `references/experience-skills-rules.md` — bullet rewriting + skills strategy + custom URL + recommendations
-- `../../references/connections/` — third-party profile snapshots (auto-archive competitor/benchmark profiles here; skip self-profiles)
+- `<CONNECTIONS_DIR>/` — third-party profile snapshots (auto-archive competitor/benchmark profiles here; skip self-profiles)
 
 ## Related skills
 

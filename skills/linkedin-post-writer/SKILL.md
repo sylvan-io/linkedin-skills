@@ -7,6 +7,8 @@ description: "Draft a new LinkedIn post from scratch using one of 20 2026 hook f
 
 Ship long-form LinkedIn posts using hook formulas that actually performed in 2025-2026 (verified engagement multipliers).
 
+> **Project stores:** Use `STORY_BANK_FILE` and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - User says "write me a LinkedIn post about X"
@@ -88,7 +90,7 @@ Rules inherited from the main flow, unchanged in this mode: never open with a qu
 
 ## Steps
 
-**Voice profile first (all drafts).** If `../../references/voice-profile.md` has `filled: yes`, load it and match the user's voice fingerprint, hard rules, and CTA/link style throughout. If it is not filled, mention once that `linkedin-humanizer` profile mode can learn their voice from a few pasted posts, then proceed with the generic voice rules. If `../../references/story-bank.md` has `filled: yes`, load it too and take concrete details (numbers, dates, named projects) from there instead of asking mid-draft. Never invent a figure that is not in it; if the bank has nothing that fits, ask the user or offer `linkedin-interviewer`.
+**Voice profile first (all drafts).** If `<VOICE_PROFILE_FILE>` has `filled: yes`, load it and match the user's voice fingerprint, hard rules, and CTA/link style throughout. If it is not filled, mention once that `linkedin-humanizer` profile mode can learn their voice from a few pasted posts, then proceed with the generic voice rules. If `<STORY_BANK_FILE>` has `filled: yes`, load it too and take concrete details (numbers, dates, named projects) from there instead of asking mid-draft. Never invent a figure that is not in it; if the bank has nothing that fits, ask the user or offer `linkedin-interviewer`.
 
 **Founder mode (when the writer is a founder).** Before picking a formula, open `../../references/founder-topics.md` and offer a founder **angle** (A1-A10) that fits their goal. The angle picks the *territory* (reprice the category, the scarce-shots math, the delegation line, and so on); several angles pin the formula for you (A9 uses F17, A10 uses F18+F20). Founder angles compound trust with a narrow audience of investors, hires, and design partners rather than chasing broad reach. Fill the angle's bracketed slots with the founder's real numbers, then continue from step 3.
 

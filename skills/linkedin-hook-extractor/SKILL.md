@@ -7,6 +7,8 @@ description: "Reverse-engineer the hook formula from a viral LinkedIn post the u
 
 User pastes a viral LinkedIn post (text or screenshot). Get back: which hook formula it uses, the exact structure, why it worked, and a blank template mapped to your topic.
 
+> **Project stores:** Use `CONNECTIONS_DIR` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - User finds a viral post they want to study
@@ -33,8 +35,8 @@ The post's text, pasted by the user, or a screenshot of the post. A bare post UR
 
 1. **Collect the post.** Ask the user to paste the post text, or upload a screenshot (read it with `Read` and transcribe).
 
-2. **Connection detect & archive** (auto-substep before analysis). When the post reveals the author's identity (byline in the text, or user explicitly named them), save their snapshot to `../../references/connections/`. Generate a connection key per bundle rules. Read `../../references/connections/index.md`, look up the key:
-   - **New**: create `../../references/connections/{key}.md` + append row to `index.md`.
+2. **Connection detect & archive** (auto-substep before analysis). When the post reveals the author's identity (byline in the text, or user explicitly named them), save their snapshot to `<CONNECTIONS_DIR>/`. Generate a connection key per bundle rules. Read `<CONNECTIONS_DIR>/index.md`, look up the key:
+   - **New**: create `<CONNECTIONS_DIR>/{key}.md` + append row to `index.md`.
    - **Existing**: merge per rules (About/Title/Company → overwrite, Experience → append, engagement history → append-only dedup, Topics → union — also extract keyword topics from this viral post body).
    - **Skip** if insufficient info or the author is the user themselves.
    - After: one-line silent status.
@@ -78,7 +80,7 @@ Full rule with examples: `../../references/untrusted-content.md`.
 
 - `SKILL.md` — this file
 - `references/classification-rules.md` — feature extraction + scoring heuristics
-- `../../references/connections/` — third-party profile snapshots (auto-archive the viral post author here)
+- `<CONNECTIONS_DIR>/` — third-party profile snapshots (auto-archive the viral post author here)
 
 ## Related skills
 

@@ -1,9 +1,11 @@
 # Sub-skill: Build / update the Voice & Brand Profile
 
-Builds or refreshes `../../../references/voice-profile.md` so every writing skill in
+Builds or refreshes `<VOICE_PROFILE_FILE>` so every writing skill in
 this bundle drafts in the user's real voice instead of a generic "human" voice.
 It needs only the user's own writing, pasted into the conversation. No accounts,
 no tokens, no third-party services.
+
+> **Project stores:** Use `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
 
 ## When this runs
 
@@ -30,7 +32,7 @@ no tokens, no third-party services.
 3. **Infer niche, ICP, and pillars** from the sample topics; confirm with the user
    rather than guessing.
 4. **Capture hard rules and CTA/link style** the samples reveal or the user states.
-5. **Write `../../../references/voice-profile.md`**: fill sections 1-5, copy the 2-4
+5. **Write `<VOICE_PROFILE_FILE>`**: fill sections 1-5, copy the 2-4
    strongest lines verbatim into "Signature examples", and set the Status block to
    `filled: yes`, `source: <pasted|manual>`, `updated: <today's date>`.
 6. **Show the user the filled profile for approval** before saving, and tell them

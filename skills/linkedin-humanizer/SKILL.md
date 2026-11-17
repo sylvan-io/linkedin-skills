@@ -22,6 +22,8 @@ Evidence tier in brackets: [strong] = replicated across 2+ independent 2025-2026
 
 See `sub-skills/rules-explainer.md` for per-rule justification, defenses, and citations, and `references/tier-rationale.md` §V3 for the evidence.
 
+> **Project stores:** Use `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - Before publishing any AI-drafted post or comment (rewrite mode)
@@ -48,7 +50,7 @@ Any text (post, comment, reply, DM) pasted by the user. Optional: target voice s
 - **Aesthetic:** strict + style rules (single natural triads, passive voice, defendable vocab). Use when the target audience is Wikipedia editors / academic readers / AI-tell hunters.
 - **All:** every rule. Maximum scrub. Will flatten literary writing and trip the Pass 4 guard.
 - **Audit (mode):** detection-only pass-fail review. No rewrite. Runs the 2026 algorithm checklist: length, hook, CTA, structure, AI tells. Returns Blockers + Warnings + suggested fixes. See `sub-skills/post-audit.md`.
-- **Profile (mode):** build/update the user's Voice & Brand Profile so every writing skill drafts in their real voice. Learns from 3-6 pasted posts. Writes `../../references/voice-profile.md`. See `sub-skills/voice-profile.md`.
+- **Profile (mode):** build/update the user's Voice & Brand Profile so every writing skill drafts in their real voice. Learns from 3-6 pasted posts. Writes `<VOICE_PROFILE_FILE>`. See `sub-skills/voice-profile.md`.
 
 ## The four passes
 
@@ -141,7 +143,7 @@ See `references/examples.md` for worked examples.
 - `sub-skills/post-audit.md` — pre-publish audit workflow (detection-only, no rewrite)
 - `sub-skills/rules-explainer.md` — when to defend a flagged rule (em dash, rule of three, passive voice)
 - `sub-skills/emoji-detector.md` — scan / score / suggest workflow for emoji density
-- `sub-skills/voice-profile.md` — build/update the user's Voice & Brand Profile (profile mode); the filled `../../references/voice-profile.md` is then read by every writing skill so drafts match the user's real voice
+- `sub-skills/voice-profile.md` — build/update the user's Voice & Brand Profile (profile mode); the filled `<VOICE_PROFILE_FILE>` is then read by every writing skill so drafts match the user's real voice
 - `sub-skills/illustration.md` — optional visual workflow using the platform's native image tool (no third-party image API)
 
 ## Related skills

@@ -14,7 +14,7 @@ This skill does the asking properly, once, and keeps the answers.
 
 ## The two things it fills
 
-| | `../../references/voice-profile.md` | `../../references/story-bank.md` |
+| | `<VOICE_PROFILE_FILE>` | `<STORY_BANK_FILE>` |
 |---|---|---|
 | Holds | how you sound | what you have to say |
 | Built from | 3-6 posts you already wrote | an interview |
@@ -22,6 +22,8 @@ This skill does the asking properly, once, and keeps the answers.
 
 They are independent. Someone with no LinkedIn history cannot fill the first, but
 can always fill the second, which is the usual reason drafts come out generic.
+
+> **Project stores:** Use `STORY_BANK_FILE` and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
 
 ## When to use
 
@@ -39,7 +41,7 @@ Not for learning someone's writing style from their posts, which is
 
 ### Bank mode (default)
 
-A broad interview that fills `../../references/story-bank.md` and keeps it.
+A broad interview that fills `<STORY_BANK_FILE>` and keeps it.
 Budget 20 to 40 minutes. It can be resumed: the file records which sections are
 thin, so a second session picks up there.
 
@@ -147,10 +149,10 @@ user. Only what the user says in this conversation counts as an answer. Full rul
 
 ## Resources
 
-- `../../references/story-bank.md` — the file this skill fills
+- `<STORY_BANK_FILE>` — the file this skill fills
 - `references/question-bank.md` — questions that reliably produce usable material,
   and the ones that do not
-- `../../references/voice-profile.md` — the other half of the user model
+- `<VOICE_PROFILE_FILE>` — the other half of the user model
 
 ## Related skills
 

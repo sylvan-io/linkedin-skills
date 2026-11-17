@@ -9,6 +9,8 @@ Turn something you already made into a post that reads like it was written for L
 
 This skill transforms, it does not generate. It reads your source, keeps the idea, and rebuilds the delivery for LinkedIn's 2026 algorithm.
 
+> **Project stores:** Use `STORY_BANK_FILE` and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+
 ## When to use
 
 - "Turn this tweet / thread into a LinkedIn post"
@@ -20,7 +22,7 @@ Not for a blank-page draft (use `linkedin-post-writer`) and not for reviewing a 
 
 ## How it works
 
-**Voice profile first (all drafts).** If `../../references/voice-profile.md` has `filled: yes`, load it and match the user's voice fingerprint, hard rules, and CTA/link style throughout. If it is not filled, mention once that `linkedin-humanizer` profile mode can learn their voice from a few posts, then proceed with the generic voice rules. If `../../references/story-bank.md` has `filled: yes`, load it too and take concrete details (numbers, dates, named projects) from there instead of asking mid-draft. Never invent a figure that is not in it; if the bank has nothing that fits, ask the user or offer `linkedin-interviewer`.
+**Voice profile first (all drafts).** If `<VOICE_PROFILE_FILE>` has `filled: yes`, load it and match the user's voice fingerprint, hard rules, and CTA/link style throughout. If it is not filled, mention once that `linkedin-humanizer` profile mode can learn their voice from a few posts, then proceed with the generic voice rules. If `<STORY_BANK_FILE>` has `filled: yes`, load it too and take concrete details (numbers, dates, named projects) from there instead of asking mid-draft. Never invent a figure that is not in it; if the bank has nothing that fits, ask the user or offer `linkedin-interviewer`.
 
 1. **Take the source.** Any format: a tweet or thread, a video or script, a blog paragraph, a caption, a transcript, a bullet list, pasted text. Ask for the source and the goal (comments / reposts / likes / saves) if not given.
 2. **Extract the spine.** Strip the source platform's shell and pull out the one claim, story, or number worth keeping. Repurposing fails when it keeps the words instead of the point.

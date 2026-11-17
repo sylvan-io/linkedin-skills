@@ -9,10 +9,10 @@ the drafts.
 
 > **It is a file in this repository, though, so git can carry it.** If you
 > cloned or forked this repo and you push, a filled profile goes wherever you
-> push it, including a public fork. Either add `references/voice-profile.md` to
-> your `.gitignore`, or keep the filled copy outside the repo and paste it in
-> when you need it. The shipped template is empty; what you add is yours to
-> protect.
+> push it, including a public fork. Either add the resolved
+> `VOICE_PROFILE_FILE` to your `.gitignore`, or relocate it through project-root
+> `AGENT.md` and keep that location untracked. The shipped template is empty;
+> what you add is yours to protect.
 
 Skills only load this profile when `filled: yes` below. An empty template is
 ignored, so drafts fall back to the generic voice rules until you populate it.
