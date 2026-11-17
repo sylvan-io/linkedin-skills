@@ -14,6 +14,8 @@ the drafts.
 > `AGENT.md` and keep that location untracked. The shipped template is empty;
 > what you add is yours to protect.
 
+> **Fallback location.** This is the bundle fallback. If the active project has a project-level voice profile, skills read and update that project file instead.
+
 Skills only load this profile when `filled: yes` below. An empty template is
 ignored, so drafts fall back to the generic voice rules until you populate it.
 

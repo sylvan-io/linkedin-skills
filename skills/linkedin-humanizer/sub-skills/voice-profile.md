@@ -5,7 +5,7 @@ this bundle drafts in the user's real voice instead of a generic "human" voice.
 It needs only the user's own writing, pasted into the conversation. No accounts,
 no tokens, no third-party services.
 
-> **Project stores:** Use `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+> **Project stores:** Use `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. A project-level voice profile wins whenever it exists; only when the project has no corresponding document may this skill write to the bundle fallback under `references/`. Report the exact file updated. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
 
 ## When this runs
 

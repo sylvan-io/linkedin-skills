@@ -15,6 +15,8 @@ from what you already told it once.
 > `AGENT.md` and keep that location untracked. Nothing here is sent to us or
 > to any service; git is the only way it travels.
 
+> **Fallback location.** This is the bundle fallback. If the active project has a project-level Story Bank, skills read and update that project file instead.
+
 Fill it by running `linkedin-interviewer`, which interviews you and writes this
 file. You can also edit it by hand at any time; the skill reads whatever is here.
 

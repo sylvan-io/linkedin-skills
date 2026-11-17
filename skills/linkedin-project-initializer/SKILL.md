@@ -34,7 +34,8 @@ The default target is the current project root:
     ├── connections/
     │   └── index.md
     ├── story-bank.md
-    └── voice-profile.md
+    ├── voice-profile.md
+    └── voice-rules.md
 ```
 
 The default `AGENT.md` configuration is:
@@ -51,6 +52,11 @@ This maps to:
 - `CONNECTIONS_DIR` = `linkedin/connections/`
 - `STORY_BANK_FILE` = `linkedin/story-bank.md`
 - `VOICE_PROFILE_FILE` = `linkedin/voice-profile.md`
+- `VOICE_RULES_FILE` = `linkedin/voice-rules.md`
+
+Once created, the project-level Story Bank and Voice Profile take precedence
+over the bundle fallback files in `references/`. Generators must not write to
+the bundle fallback while the corresponding project file exists.
 
 Do not create separate `story/` or `voice/` directories unless the user
 explicitly asks for those paths.
@@ -76,6 +82,7 @@ explicitly asks for those paths.
    - Create `linkedin/connections/index.md` when it is missing or empty.
    - Create `linkedin/story-bank.md` when it is missing or empty.
    - Create `linkedin/voice-profile.md` when it is missing or empty.
+   - Create `linkedin/voice-rules.md` when it is missing or empty.
    - Preserve every non-empty existing file unchanged.
 
 5. **Create or merge AGENT.md.**
@@ -110,7 +117,8 @@ explicitly asks for those paths.
 
 7. **Validate the result.**
    - Confirm the configured directories exist.
-   - Confirm `index.md`, `story-bank.md`, and `voice-profile.md` exist.
+   - Confirm `index.md`, `story-bank.md`, `voice-profile.md`, and
+     `voice-rules.md` exist.
    - Confirm the Story Bank and voice profile still contain `filled: no` when
      they were newly created.
    - Confirm AGENT.md contains one valid `linkedin-marketing` block.
@@ -126,7 +134,8 @@ explicitly asks for those paths.
 - Do not fetch anything from the network or call a third-party service.
 - Do not create content drafts or pretend the workspace is personalized. It is
   initialized but not filled.
-- Use the exact fixed filenames `story-bank.md` and `voice-profile.md`.
+- Use the exact fixed filenames `story-bank.md`, `voice-profile.md`, and
+  `voice-rules.md`.
 - If any write fails, report the failed path and the files already created.
   Do not hide a partial initialization.
 
@@ -160,4 +169,4 @@ workspace fully initialized while the configuration is unresolved.
 ## Resources
 
 - `references/workspace-templates.md` — starter contents for AGENT.md,
-  connections index, Story Bank, and voice profile
+  connections index, Story Bank, voice profile, and voice rules

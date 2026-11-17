@@ -23,7 +23,7 @@ This skill does the asking properly, once, and keeps the answers.
 They are independent. Someone with no LinkedIn history cannot fill the first, but
 can always fill the second, which is the usual reason drafts come out generic.
 
-> **Project stores:** Use `STORY_BANK_FILE` and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+> **Project stores:** Use `STORY_BANK_FILE` and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. A project-level Story Bank wins whenever it exists; only when the project has no corresponding document may this skill write to the bundle fallback `references/story-bank.md`. Voice Profile is read-only context here; `linkedin-humanizer` profile mode writes it under the same project-first rule. Report the exact file updated. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
 
 ## When to use
 
@@ -76,7 +76,7 @@ bank, so a post interview quietly grows it.
 7. **Settle naming and limits explicitly.** Who and what can appear in public, who
    cannot, what subjects stay out entirely. Ask directly; do not infer. A draft
    that names the wrong client is not recoverable.
-8. **Write the bank.** Fill the sections, keep their phrasing verbatim where it is
+8. **Write the bank to `<STORY_BANK_FILE>`.** Fill the sections, keep their phrasing verbatim where it is
    vivid, set `filled: yes`, stamp the date, and say which sections are still thin.
 9. **Show what it unlocks.** Name two or three specific posts the new material
    could produce, so the session ends with something rather than a filled form.

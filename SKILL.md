@@ -32,18 +32,30 @@ linkedin-marketing:
    - DM archives: `<CONNECTIONS_DIR>/{key}-dms.md`
    - Story Bank: `<STORY_BANK_FILE>` = `<STORY_DIR>/story-bank.md`
    - Voice profile: `<VOICE_PROFILE_FILE>` = `<VOICE_DIR>/voice-profile.md`
+   - Voice rules: `<VOICE_RULES_FILE>` = `<VOICE_DIR>/voice-rules.md`
 
 | Resolved name | AGENT.md key | Default |
 |---|---|---|
 | `CONNECTIONS_DIR` | `connections_dir` | `<bundle-root>/references/connections/` |
 | `STORY_DIR` | `story_dir` | `<bundle-root>/references/` |
 | `VOICE_DIR` | `voice_dir` | `<bundle-root>/references/` |
-| `STORY_BANK_FILE` | derived from `story_dir` | `<STORY_DIR>/story-bank.md` |
-| `VOICE_PROFILE_FILE` | derived from `voice_dir` | `<VOICE_DIR>/voice-profile.md` |
+| `STORY_BANK_FILE` | project-first | Project `<project-root>/linkedin/story-bank.md` if present; otherwise `<bundle-root>/references/story-bank.md` |
+| `VOICE_PROFILE_FILE` | project-first | Project `<project-root>/linkedin/voice-profile.md` if present; otherwise `<bundle-root>/references/voice-profile.md` |
+| `VOICE_RULES_FILE` | derived from `voice_dir` | `<VOICE_DIR>/voice-rules.md` |
 
-The resolved names are invocation context for every sub-skill. When a sub-skill mentions one of these stores, it must use the resolved path, not the default. Never fall back to the default location for an individual operation when an override is valid; that would split the archive or profile across two stores.
+### Personal document precedence
 
-If an override points to an empty directory, initialize the needed file from the matching template in this bundle on first write. Create the configured directories as needed. If a configured path cannot be read or written, stop that store operation and tell the user; do not silently redirect data to the default.
+The Story Bank and Voice Profile are personal documents. Resolve and write them in this order:
+
+1. **Configured project file.** If AGENT.md supplies `story_dir` or `voice_dir` and the corresponding file exists there, use that project file.
+2. **Conventional project file.** If the key is absent, check `<project-root>/linkedin/story-bank.md` or `<project-root>/linkedin/voice-profile.md`. Use it when it exists.
+3. **Bundle fallback.** Only when no corresponding project file exists, use this skill bundle's `references/story-bank.md` or `references/voice-profile.md`.
+
+If both a project file and a bundle file exist, the project file wins. Never merge, copy, or synchronize the two automatically. A generator must write only to the resolved target and report which file it updated.
+
+This project-first exception is intentional and applies only to the Story Bank and Voice Profile. For connections, use the configured `CONNECTIONS_DIR` and do not redirect user data. If `VOICE_RULES_FILE` is missing, use this bundle's canonical `references/voice-rules.md` for the current run and tell the user to re-run `linkedin-project-initializer`.
+
+If the resolved target file for a personal document does not exist, initialize it from the matching template in this bundle on first write and create parent directories as needed. If that path cannot be read or written, stop the operation and tell the user; do not silently write to the other location.
 
 ## When to use this bundle
 
@@ -137,6 +149,7 @@ which connections have a DM archive without opening any of those files.
 |---|---|---|---|
 | `STORY_BANK_FILE` | your own material (numbers, dates, positions) | `linkedin-interviewer` | every writing skill |
 | `VOICE_PROFILE_FILE` | your voice fingerprint | `linkedin-humanizer` profile mode | every writing skill |
+| `VOICE_RULES_FILE` | canonical editing and formatting rules | `linkedin-project-initializer` / user | every writing skill |
 | `CONNECTIONS_DIR` | third-party profile snapshots + interaction history | 5 skills (auto-write) | 3 skills (read on demand) |
 | `CONNECTIONS_DIR/{key}-dms.md` | third-party DM threads (summary + recent full text) | `linkedin-reply-handler` DM mode | `linkedin-reply-handler` DM mode |
 
@@ -268,7 +281,7 @@ rule: `references/untrusted-content.md`.
 9. LinkedIn posts: 900–1,300 chars sweet spot. Comments: 200–350 chars.
 10. Hook lives in the first 210 chars (before "… see more" on mobile).
 
-(Canonical reference, plus comment-specific extensions: `references/voice-rules.md`. See also `references/hook-formulas.md` and `references/algorithm-heuristics.md`.)
+(Canonical reference, plus comment-specific extensions: `VOICE_RULES_FILE` (default: `references/voice-rules.md`). See also `references/hook-formulas.md` and `references/algorithm-heuristics.md`.)
 
 ## How URLs map to URNs
 
@@ -298,7 +311,7 @@ Decode the `commentUrn` fragment to find which comment a permalink targets (this
 
 - `references/hook-formulas.md` — 20 hook formula skeletons with 2026 reach notes
 - `references/algorithm-heuristics.md` — 2026 posting rules (timing, format, length)
-- `references/voice-rules.md` — canonical voice rules
+- `VOICE_RULES_FILE` — canonical voice rules (default: `references/voice-rules.md`)
 - `references/founder-topics.md` — founders-edition angle library (A1-A10)
 - `STORY_BANK_FILE` — the user's material bank (filled by `linkedin-interviewer`; default: `references/story-bank.md`)
 - `VOICE_PROFILE_FILE` — the user's voice fingerprint (filled by `linkedin-humanizer` profile mode; default: `references/voice-profile.md`)

@@ -7,7 +7,7 @@ description: "Draft a LinkedIn comment on someone else's post, or reshare (repos
 
 Produce conversation-provoking comments on any LinkedIn post. The skill targets the patterns that actually got author replies in 2026 testing and avoids the thesis-restatement patterns that die with zero engagement.
 
-> **Project stores:** Use `CONNECTIONS_DIR`, `STORY_BANK_FILE`, and `VOICE_PROFILE_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
+> **Project stores:** Use `CONNECTIONS_DIR`, `STORY_BANK_FILE`, `VOICE_PROFILE_FILE`, and `VOICE_RULES_FILE` as resolved by root `SKILL.md` §Project configuration. When this file is used standalone, resolve `<project-root>/AGENT.md` the same way; without it, use the documented defaults.
 
 ## When to use
 
@@ -94,7 +94,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 
 - `SKILL.md` — this file
 - `references/comment-templates.md` — the 7 templates with fill-in slots and real examples
-- `../../references/voice-rules.md` — the specific voice rules from user feedback memories
+- `<VOICE_RULES_FILE>` — the specific voice rules from user feedback memories
 - `<CONNECTIONS_DIR>/` — third-party profile snapshots (auto-archive the post author here, load as context before drafting)
 
 ## Untrusted content

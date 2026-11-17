@@ -51,10 +51,18 @@ linkedin-marketing:
 - 相对路径按**项目根目录**解析，不按技能目录解析。
 - `connections_dir` 存放 `index.md`、联系人档案和 `{key}-dms.md`。
 - `story_dir` 下使用固定文件名 `story-bank.md`。
-- `voice_dir` 下使用固定文件名 `voice-profile.md`。
+- `voice_dir` 下使用固定文件名 `voice-profile.md` 和 `voice-rules.md`。
 - 根技能在未指定时默认使用 `references/connections/`、`references/`、`references/`。
-- `linkedin-project-initializer` 生成的工程默认使用 `linkedin/connections/`、`linkedin/`、`linkedin/`，并把这些值显式写入 `AGENT.md`。
+- `linkedin-project-initializer` 生成的工程默认使用 `linkedin/connections/`、`linkedin/`、`linkedin/`，并生成 `linkedin/voice-rules.md`，同时把这些路径显式写入 `AGENT.md`。
 - 如果覆盖了存储位置，请自行确保该目录不会被提交；默认路径已写入 `.gitignore`。
+
+个人 Voice Profile 与 Story Bank 的读取、生成优先级：
+
+1. `AGENT.md` 配置的项目文件存在时，读写项目文件。
+2. 未配置时，检查项目根目录的 `linkedin/voice-profile.md` 或 `linkedin/story-bank.md`，存在则使用。
+3. 项目中没有对应文档时，才读写 Skill 自带的 `references/voice-profile.md` 或 `references/story-bank.md`。
+
+项目文件与 Skill 内置文件同时存在时，项目文件优先；不会自动合并或双向同步。生成技能会在输出中说明实际更新的是哪个文件。
 
 ## 内容技能使用方式（统一流程）
 
@@ -89,15 +97,19 @@ linkedin-marketing:
 
 ### Voice & Brand Profile — 默认 `references/voice-profile.md`
 
-定义你的写作声音指纹：句子节奏、标志性开头、标点习惯、常用词/禁用词、emoji 风格、hard rules、CTA 方式，以及 2-4 句最能代表你的 signature examples。
+定义你的写作声音指纹：句子节奏、标志性开头、标点习惯、常用词/禁用词、emoji 风格、hard rules、CTA 方式，以及 2-4 句最能代表你的 signature examples。项目存在 `linkedin/voice-profile.md` 时优先更新项目文件；项目没有对应文档时才使用 `references/voice-profile.md`。
 
 **生成方式**：
 - **自动**：给 `linkedin-humanizer`（声音画像子模式）粘贴 3-6 篇你写过的真实 LinkedIn 帖子/评论，它会从样本中提取指纹并写入文件，自动把 `filled` 置为 `yes`。
 - **手动**：直接编辑 `references/voice-profile.md`，按模板填写 §1-5，再把 `filled: no` 改成 `filled: yes`。
 
+### Voice Rules — 默认 `references/voice-rules.md`
+
+规定评论和写作的硬性格式、禁用词、结构与反模式。根技能通过 `VOICE_RULES_FILE` 读取；初始化技能会在 `linkedin/voice-rules.md` 生成一份可直接修改的默认规则文件，已有非空文件不会被覆盖。
+
 ### Story Bank — 默认 `references/story-bank.md`
 
-你的内容弹药库：具体数字、 shipped 项目、转折点、伤疤、你愿意捍卫的立场、能公开提及的名字和禁区。写作技能在需要论据时直接从中取材，不再编造或反复询问。
+你的内容弹药库：具体数字、 shipped 项目、转折点、伤疤、你愿意捍卫的立场、能公开提及的名字和禁区。写作技能在需要论据时直接从中取材，不再编造或反复询问。项目存在 `linkedin/story-bank.md` 时优先更新项目文件；项目没有对应文档时才使用 `references/story-bank.md`。
 
 **生成方式**：
 - **自动**：运行 `linkedin-interviewer`，它会按 timeline → receipts → shipped → turning points → scars → positions 的结构采访你，完成后写入文件并置 `filled: yes`。

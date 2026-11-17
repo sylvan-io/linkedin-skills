@@ -50,7 +50,7 @@ Any text (post, comment, reply, DM) pasted by the user. Optional: target voice s
 - **Aesthetic:** strict + style rules (single natural triads, passive voice, defendable vocab). Use when the target audience is Wikipedia editors / academic readers / AI-tell hunters.
 - **All:** every rule. Maximum scrub. Will flatten literary writing and trip the Pass 4 guard.
 - **Audit (mode):** detection-only pass-fail review. No rewrite. Runs the 2026 algorithm checklist: length, hook, CTA, structure, AI tells. Returns Blockers + Warnings + suggested fixes. See `sub-skills/post-audit.md`.
-- **Profile (mode):** build/update the user's Voice & Brand Profile so every writing skill drafts in their real voice. Learns from 3-6 pasted posts. Writes `<VOICE_PROFILE_FILE>`. See `sub-skills/voice-profile.md`.
+- **Profile (mode):** build/update the user's Voice & Brand Profile so every writing skill drafts in their real voice. Learns from 3-6 pasted posts. Writes `<VOICE_PROFILE_FILE>`; a project-level voice profile wins, with the bundle `references/voice-profile.md` used only when no project document exists. See `sub-skills/voice-profile.md`.
 
 ## The four passes
 
