@@ -23,7 +23,7 @@ Canonical sample outputs for the engager-analytics report. See `SKILL.md` for th
 
 - **Follow back** (peers worth reciprocal engagement): top 5 by activity
 - **Comment-drop targets** (aspirational creators with their own posts): top 5
-- **DM-able prospects** (with the rationale): top 5 with one-line T1 value-first opener seed (no product pitch, quote, or meeting ask)
+- **DM-able prospects** (with the rationale): top 5 with one-line English T1 value-first opener seed plus a paired Simplified Chinese review (no product pitch, quote, or meeting ask)
 
 ## Example run
 
@@ -33,4 +33,4 @@ Canonical sample outputs for the engager-analytics report. See `SKILL.md` for th
 > - 50 commenters fetched ($0.25)
 > - Tier split: 6 Peer / 14 Aspirational / 18 Prospect / 12 Other
 > - 3 cross-post engagers detected (also engaged with my post 2 weeks ago)
-> - Top 5 DM-able prospects with one-line openers attached
+> - Top 5 DM-able prospects with English one-line openers and paired Chinese review attached

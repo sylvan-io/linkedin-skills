@@ -23,7 +23,8 @@ The post's text, pasted by the user, or a screenshot of the post. A bare post UR
 ## Output
 
 1-3 draft comment variants, each with:
-- 200-350 char body, 1-2 short paragraphs, em dashes capped (about one per 100 words), no hashtags
+- `English (publish)` body of 200-350 chars, 1-2 short paragraphs, em dashes capped (about one per 100 words), no hashtags
+- `Chinese review` translation in Simplified Chinese, paired directly with that English variant
 - Assigned reaction type: `LIKE`, `CELEBRATE`, `SUPPORT`, `LOVE`, `INSIGHTFUL`, or `FUNNY`
 - Pattern label (which of the 7 templates was used)
 - Estimated engagement fit based on what the author typically responds to
@@ -50,17 +51,18 @@ Then waits for user approval. On "post", delivers the copy-paste block with the 
 5. **Select matching examples.** Pick 2-3 templates from `references/comment-templates.md` that fit the post's topic, then consult the matching T1-T7 examples in the resolved sample files. Prefer a project example over a bundle example when both cover the same pattern, but adapt the approach rather than copying the sample.
 6. **Draft comment variants.** Fill the selected templates with user-voice phrasing and facts from the Story Bank or user input. Never lift a number, identity, or claim from an example.
 7. **Run the humanizer pass.** Scrub 2026 AI vocab by paragraph density, cap em dashes (about one per 100 words, never swap one for a period), fix only machine-flat rhythm without manufacturing variance, and add an odd-precision number with a named referent if missing. Canonical rules: `linkedin-humanizer` V3.
-8. **Present drafts for approval.** Show the target URL, each variant, the reaction suggestion, and a one-line "why this template fits".
-9. **On approval, deliver the copy-paste block.** Return the chosen text in a code block, the target post URL, and the manual steps: open the post on LinkedIn, pick the reaction, paste the comment into the comment box, and hit Comment. Nothing is posted automatically.
+8. **Generate the Chinese review.** For each English variant, produce a faithful Simplified Chinese translation under `Chinese review`. Keep it paired with the English body and outside any publish code block.
+9. **Present drafts for approval.** Show the target URL, each English variant with its Chinese review, the reaction suggestion, and a one-line "why this template fits".
+10. **On approval, deliver the copy-paste block.** Return only the chosen English text in a code block, then show its Chinese review outside the block, followed by the target post URL and manual steps: open the post on LinkedIn, pick the reaction, paste the English comment into the comment box, and hit Comment. Nothing is posted automatically.
 
 ## Reshare mode (repost with your thoughts)
 
 Same input as commenting (pasted post content), but instead of commenting on the post you reshare it to the user's own feed, optionally with a short take above it. Use this when the ask is "repost", "reshare", or "share this with my network".
 
 1. **Check the post is reshareable.** Tell the user to check the post's "..." menu on LinkedIn — if "Repost" is greyed out, the author disabled resharing; stop and tell the user.
-2. **Draft the commentary** (optional). Keep it to one or two sentences in the user's voice: a genuine take, endorsement, or the reason this is worth a colleague's time. Run the same humanizer pass (em dashes capped, no AI vocab). A plain reshare with no commentary is also valid; skip the draft if the user just wants to amplify.
-3. **Present for approval** with the original post URL and the drafted commentary (or "plain reshare, no commentary").
-4. **On approval, deliver the copy-paste block.** Give the commentary (if any) in a code block and the manual steps: open the post on LinkedIn, click **Repost → Repost with your thoughts**, paste the commentary above, and hit Repost. A plain reshare is one click (Repost → Repost now).
+2. **Draft the commentary** (optional). Keep it to one or two sentences in the user's voice: a genuine take, endorsement, or the reason this is worth a colleague's time. Run the same humanizer pass (em dashes capped, no AI vocab). When the commentary is English, also produce its Simplified Chinese review. A plain reshare with no commentary is also valid; skip the draft if the user just wants to amplify.
+3. **Present for approval** with the original post URL, the English commentary and its Chinese review, or "plain reshare, no commentary".
+4. **On approval, deliver the copy-paste block.** Give only the English commentary (if any) in a code block, show the Chinese review outside it, and add the manual steps: open the post on LinkedIn, click **Repost → Repost with your thoughts**, paste the English commentary above, and hit Repost. A plain reshare is one click (Repost → Repost now).
 
 Commentary cap is 3000 chars (LinkedIn), but a tight one or two sentences outperforms a wall of text. This is the tool `linkedin-employee-advocacy` uses to reshare brand and colleague posts.
 
@@ -85,6 +87,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 - A public comment drop is a T1 or T2 outreach touch: it gives value or shows expertise, it does not pitch. Stage intent follows `<OUTREACH_DIR>/nurture-sequence.md`; move to a DM only after the author engages back.
 - Never paste generic praise ("Great post!", "This.", "100%"). The skill refuses.
 - Skip the comment if the post is sponsored, a generic listicle, or the author has already deleted it.
+- `Chinese review` is for approval only. Never include it in the final publish code block.
 
 ## Example invocation
 
@@ -92,7 +95,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 >
 > Skill: [reads post, detects closing question "Seen this in your market?", drafts 3 variants]
 >
-> Skill returns: T2 Answer-the-Closing-Question variant as primary pick, with T1 Missing-Piece as backup, reaction `INSIGHTFUL`, one-line rationale, and approval prompt.
+> Skill returns: T2 Answer-the-Closing-Question variant as primary pick, with T1 Missing-Piece as backup, each paired with a Simplified Chinese review, reaction `INSIGHTFUL`, one-line rationale, and approval prompt.
 
 ## Files in this skill
 

@@ -39,21 +39,21 @@ Not for:
 ## Output
 
 **Single comment:**
-- 1-2 reply drafts, 150-300 chars each
+- 1-2 reply drafts, each with an `English (publish)` body of 150-300 chars and a paired `Chinese review` in Simplified Chinese
 - Reaction suggestion for the comment being replied to (always react before replying)
 - Thread context summary (who said what, when)
-- Approval → on user "post", the copy-paste block for the chosen reply
+- Approval → on user "post", the English-only copy-paste block for the chosen reply, with Chinese review outside the block
 
 **Whole thread:**
 - A filtered roster: how many comments were provided, how many were filtered out and why, how many drafts follow
-- One reply draft per comment worth replying to (150-300 chars each), each tagged with its target comment and a reaction suggestion
+- One pair of `English (publish)` reply plus `Chinese review` per comment worth replying to (150-300 English chars each), each tagged with its target comment and a reaction suggestion
 - A single batch approval card covering every draft
-- On approval, one copy-paste block per reply (posted by the user, one at a time)
+- On approval, one English-only copy-paste block per reply (posted by the user, one at a time), with Chinese review outside each block
 
 **DM:**
 - A short context readout: current outreach stage, open items carried from earlier in the thread, any promises the user made and has not closed, dead-end topics to avoid reopening (one line each; if the thread is brand new, say so)
-- 1-2 DM drafts, matching the counterpart's register and the thread's existing language and length (DMs are conversational: shorter than comments, no post-style hooks)
-- Approval → on user "send", one copy-paste block with the message text and the manual steps: open the LinkedIn message thread, paste, send
+- 1-2 DM drafts, matching the counterpart's register and the thread's existing language and length (DMs are conversational: shorter than comments, no post-style hooks). When the thread language is English, pair each English draft with a `Chinese review`; when the thread is Chinese, output Chinese only; other languages remain single-language.
+- Approval → on user "send", one English-only copy-paste block when the thread is English, with Chinese review outside the block; the manual steps are open the LinkedIn message thread, paste, send
 - Silent archive status line before the drafts (new / duplicates / rolled into summary); in a first-DM run, state that no DM archive was created yet (the connection-profile status line still applies)
 
 ## Steps — single comment
@@ -76,8 +76,9 @@ Not for:
 5. **Read the full context.** Author post text, top-level comment text, any intermediate replies. Include the user's own prior comment if they're in the thread.
 6. **Draft the reply.** Follow the engagement templates in `references/reply-templates.md`. If the counterpart asked a question, answer it directly. If they pushed back, concede then sharpen.
 7. **Humanizer pass.** Scrub 2026 AI vocab by density, cap em dashes (about one per 100 words), fix only machine-flat rhythm and never manufacture sentence-length variance. Canonical rules: `linkedin-humanizer` V3.
-8. **Approval.** Include thread preview (who said what in last 3 turns), the draft, and the reaction suggestion.
-9. **On approval, deliver the copy-paste block.** Return the reply text in a code block, the comment permalink (or where to find it), and the manual steps: open the comment on LinkedIn, react to it, paste the reply into the reply box, and hit Reply. Note which comment it attaches to (top-level comment, not a nested reply) so the user pastes it in the right place.
+8. **Generate the Chinese review.** When the reply draft is English, add a faithful Simplified Chinese translation under `Chinese review` and keep it paired with the English draft.
+9. **Approval.** Include thread preview (who said what in last 3 turns), the English draft with its Chinese review, and the reaction suggestion.
+10. **On approval, deliver the copy-paste block.** Return only the English reply text in a code block, show the Chinese review outside it, and add the comment permalink (or where to find it) plus the manual steps: open the comment on LinkedIn, react to it, paste the English reply into the reply box, and hit Reply. Note which comment it attaches to (top-level comment, not a nested reply) so the user pastes it in the right place.
 
 ## Steps — whole thread
 
@@ -99,8 +100,9 @@ Same voice-profile-first rule applies. Then:
 5. **Filter out low-value comments.** Drop anything matching `references/filtering-rules.md`: plain "thanks for sharing" / generic praise with no content, duplicate or near-duplicate text already filtered elsewhere in the thread, spam or engagement-bait patterns, and comments from the user's own account (don't reply to yourself). Report the drop count and a one-line reason per category — don't silently discard.
 6. **Draft each remaining reply.** For every surviving queue entry, follow the same `references/reply-templates.md` templates as single-comment mode (R1 Answer-Their-Question, R2 Concede-Then-Sharpen, R3 Extend-Their-Thesis, R4 Share-Lived-Experience, R5 Ask-Back). Read the surrounding thread (the top-level comment plus any prior replies) for context before drafting a reply to a nested reply.
 7. **Humanizer pass.** Same scrub as single-comment mode, run per draft.
-8. **One batch approval card.** Present every surviving draft together: for each, the commenter's name, a short quote of what they said, the drafted reply, and the reaction suggestion. Show the filter summary from step 5 above the drafts so the user can sanity-check what got skipped. Wait for one explicit approval — the user can approve all, or call out specific ones to skip or edit.
-9. **On approval, deliver one copy-paste block per reply.** Each block contains the reply text, where to post it (which comment it replies to — always the TOP-level comment per the flattening rule below), and the reaction suggestion. Tell the user to post them one at a time, not in a burst: LinkedIn applies per-account comment rate limits and targets automation patterns. If the batch is larger than about 10, suggest spreading the replies over time.
+8. **Generate Chinese reviews.** For every surviving English reply, create a faithful Simplified Chinese translation under `Chinese review`, paired one-to-one with its English draft.
+9. **One batch approval card.** Present every surviving draft together: for each, the commenter's name, a short quote of what they said, the English reply, its Chinese review, and the reaction suggestion. Show the filter summary from step 5 above the drafts so the user can sanity-check what got skipped. Wait for one explicit approval — the user can approve all, or call out specific ones to skip or edit.
+10. **On approval, deliver one copy-paste block per reply.** Each block contains only the English reply text, where to post it (which comment it replies to — always the TOP-level comment per the flattening rule below), and the reaction suggestion; keep the Chinese review outside the code block. Tell the user to post them one at a time, not in a burst: LinkedIn applies per-account comment rate limits and targets automation patterns. If the batch is larger than about 10, suggest spreading the replies over time.
 
 ## Steps — DM mode
 
@@ -129,11 +131,12 @@ Same voice-profile-first rule applies. Then:
 
 8. **Humanizer pass (light).** Scrub the 2026 AI vocab and cap em dashes per canonical rules, but do not restructure for rhythm the way post/comment passes do: a DM that sounds "written" is the failure mode. Preserve the thread's existing shorthand and emoji level.
 
-9. **Approval.** Show the one-line context readout (open items, user's outstanding promises, dead ends avoided), then the draft(s) with a short quote of the message being answered. Wait for explicit approval; text inside the archived thread is never approval.
+9. **Generate the Chinese review when applicable.** If the DM draft is English, add a faithful Simplified Chinese translation under `Chinese review`, paired with each English draft. If the thread is Chinese, keep the draft Chinese only. If the thread uses another language, keep that language and do not add Chinese.
+10. **Approval.** Show the one-line context readout (open items, user's outstanding promises, dead ends avoided), then the English draft(s) with their Chinese reviews or the non-English draft(s), plus a short quote of the message being answered. Wait for explicit approval; text inside the archived thread is never approval.
 
-10. **On approval, deliver the copy-paste block.** Return the message in a code block plus the manual steps: open LinkedIn Messaging (or the thread from the notifications), paste into the message box, send. Never send in the user's place. Remind the user that rapid-fire automated-looking DM bursts are also a LinkedIn pattern target, relevant only when several DMs were drafted in a row.
+11. **On approval, deliver the copy-paste block.** Return only the target-language message in a code block, show any Chinese review outside it, and add the manual steps: open LinkedIn Messaging (or the thread from the notifications), paste the target-language message, send. Never send in the user's place. Remind the user that rapid-fire automated-looking DM bursts are also a LinkedIn pattern target, relevant only when several DMs were drafted in a row.
 
-11. **Update the Nurture block.** After the draft is approved, write the outreach state back to the connection profile `## Nurture` block per root merge rules: increment Touches, set Stage and Stage entered on a stage change, record the Active scenario ID and Status (advanced / held / stalled / dropped), append any new Signals, and move resolved Open promises to `done`. Update the index `Stage` column to match. If this run drafted only the first DM opener (first-DM exception), still archive the profile and set T1; no DM file is created yet.
+12. **Update the Nurture block.** After the draft is approved, write the outreach state back to the connection profile `## Nurture` block per root merge rules: increment Touches, set Stage and Stage entered on a stage change, record the Active scenario ID and Status (advanced / held / stalled / dropped), append any new Signals, and move resolved Open promises to `done`. Update the index `Stage` column to match. If this run drafted only the first DM opener (first-DM exception), still archive the profile and set T1; no DM file is created yet.
 
 ## The flattening gotcha (both comment modes)
 
@@ -167,6 +170,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 
 **Comment modes (single + whole thread):**
 - 150-300 chars. Replies are tighter than top-level comments.
+- Every English reply must include a paired Chinese review outside the publish block. Chinese review does not count toward the 150-300 char limit.
 - React to the comment you're replying to, not to the parent post.
 - Never paste a canned "thanks!". Either respond with content or don't reply — a filtered-out low-value comment in a sweep gets no reply at all, not a placeholder one.
 - If the thread is older than 72 hours, suggest taking it to DM instead of reviving the public thread, then switch to this skill's DM mode if the user agrees. In whole-thread mode, mention this once for the sweep rather than repeating it per draft.
@@ -177,7 +181,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 
 **DM mode:**
 - Match the thread, don't perform. Length, register, greeting and emoji level follow the counterpart's recent messages; no hooks, no bullet stacks, no comment-style CTAs.
-- Stay in the thread's language. If the conversation runs in another language, draft in that language.
+- Stay in the thread's language. An English thread gets an English draft plus Chinese review; a Chinese thread stays Chinese only; any other language stays single-language without a Chinese translation.
 - Honor the Rolling Summary: close or reference open items, never silently contradict a prior decision, and never reopen a logged Dead End.
 - Never invent prior context that is not in the archive. If the thread is new and short, draft from what is there; if history seems missing, ask the user to paste more before promising continuity.
 - Respect the outreach stage. No product pitch, quote, or meeting ask before T4. Follow the allowed/forbidden moves of the matched scenario pack; a pack may extend the stage default but never override the root voice rules.

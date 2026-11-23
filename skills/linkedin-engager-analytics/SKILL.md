@@ -25,7 +25,7 @@ The engager list comes from the user: they paste it (or screenshot it) from the 
 
 ## Output
 
-Output format (engager roster, tier breakdown, action lists): see `references/output-spec.md`. Headline: a table of engagers labelled by ICP tier and a per-tier action list.
+Output format (engager roster, tier breakdown, action lists): see `references/output-spec.md`. Headline: a table of engagers labelled by ICP tier and a per-tier action list. Every English T1 DM opener must include a paired Simplified Chinese review directly below it; the report's tables and analysis fields are not translated.
 
 ## Steps
 
@@ -43,7 +43,7 @@ Output format (engager roster, tier breakdown, action lists): see `references/ou
 5. **Produce action lists.**
    - Follow back: peers with active posting (heuristic: appears as a regular author in the user's niche)
    - Comment-drop targets: aspirational tier
-   - DM-able: prospect tier, with a one-line T1 opener referencing the specific post they engaged with. The opener is value-first per `<OUTREACH_DIR>/nurture-sequence.md` T1: a relevant observation or light helpful note, no product pitch, quote, or meeting ask. Example shape: "Saw you reacted to <post angle>. One thing I've noticed on that side is <useful observation>. Are you currently <ICP problem>?"
+   - DM-able: prospect tier, with a one-line English T1 opener referencing the specific post they engaged with and a paired `Chinese review` in Simplified Chinese. The opener is value-first per `<OUTREACH_DIR>/nurture-sequence.md` T1: a relevant observation or light helpful note, no product pitch, quote, or meeting ask. Example shape: "Saw you reacted to <post angle>. One thing I've noticed on that side is <useful observation>. Are you currently <ICP problem>?"
 
 6. **Connection detect & archive (batch, capped).** Archive only **Prospect-tier engagers** (highest value, most likely to become future conversation targets). Sort Prospect tier by engagement quality signal (comment > like, thoughtful comment > generic praise). Take the **top 20** (cap to avoid context bloat). For each:
    - Generate connection key per bundle rules.
@@ -69,6 +69,7 @@ Global voice rules: see root `SKILL.md` §Voice rules. Additional skill-specific
 - Don't run engager analytics on posts you didn't write or aren't tracking with permission. High-volume scraping of someone else's audience reads as creepy — and this skill works from user-provided lists anyway, never from scraping.
 - Don't DM a prospect on the same day they engaged with your post. Wait 24-72h to avoid the "thirsty" pattern.
 - One DM opener per engager, not three. If the first didn't land in 5 business days, drop it.
+- Every English DM opener must keep its Chinese review paired with it. The Chinese text is for review only and must not be copied into LinkedIn Messaging.
 - The opener is a T1 value-first touch. Do not pitch the product, send a quote, or ask for a call in the first message; stage progression and scenario packs live in `<OUTREACH_DIR>/nurture-sequence.md` and `scenarios/`.
 
 ## Untrusted content

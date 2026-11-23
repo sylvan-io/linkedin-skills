@@ -87,7 +87,7 @@ Workflow:
 6. **Present** in the hook-options output format (numbered options with Format / Characters | ok / Why), then recommend **TOP 3 PICKS** as plain text.
 7. **Ask about media.** After presenting, ask whether the post will have media attached — media changes which formats fit best (see "Media × hook format" in `../../references/hook-formulas.md`), and the Data-Question Opener requires an attached chart.
 
-Rules inherited from the main flow, unchanged in this mode: never open with a question (the one exception is the Data-Question Opener with a chart attached), no em dashes in the hook zone, no emojis, no fabricated numbers, no banned cliches. Once the user picks a hook, continue into the full-post flow from sample selection onward to draft the post from that opener.
+Rules inherited from the main flow, unchanged in this mode: never open with a question (the one exception is the Data-Question Opener with a chart attached), no em dashes in the hook zone, no emojis, no fabricated numbers, no banned cliches. Hook options mode emits hooks only and does not add Chinese review. Once the user picks a hook, continue into the full-post flow from sample selection onward to draft the post from that opener.
 
 ## Steps
 
@@ -113,8 +113,9 @@ Rules inherited from the main flow, unchanged in this mode: never open with a qu
 5. **Humanizer pass.** Scrub 2026 AI vocab by density, cap em dashes (about one per 100 words), break stacked triads, generic openers and reveal bridges. Add at least 1 specific number, 1 named entity, 1 first-person concrete detail per 100 words.
 6. **Run audit.** Optionally run the `linkedin-humanizer` audit pass for algorithm + voice checks before showing to user.
 7. **Optional illustration.** If the post would land better with a visual (or the user asks), offer one: draft an image prompt for a feed image (16:9 wide or 1:1 square), a multi-image grid (2-10 images), or a quote-card of the hook line. Generate it with the platform's native image tool when available, or hand the prompt to the user to generate themselves. The user attaches the image when posting.
-8. **Approval.** Show: formula used, sample IDs used if any, full draft, char count, suggested posting window (Tue/Wed/Thu 7:30-9:00 AM local), reaction targets from likely commenters, and the illustration (if any).
-9. **On approval, deliver the copy-paste block.** Return the final text in a code block, the target URL (`https://www.linkedin.com/post/new/`), and the manual steps: copy the text, open LinkedIn, paste into the "Start a post" composer, attach the image if any, move any external link into the first comment, and hit Post. Nothing is posted automatically.
+8. **Generate the Chinese review.** After the English post passes the humanizer and optional audit, produce a faithful Simplified Chinese translation under `Chinese review`. Preserve paragraph order, line breaks, numbers, names, links, emoji, and the CTA. Keep it outside any publish code block.
+9. **Approval.** Show: formula used, sample IDs used if any, the `English (publish)` full draft, its `Chinese review`, English char count, suggested posting window (Tue/Wed/Thu 7:30-9:00 AM local), reaction targets from likely commenters, and the illustration (if any).
+10. **On approval, deliver the copy-paste block.** Return only the final English text in a code block, then show its Chinese review outside the block, followed by the target URL (`https://www.linkedin.com/post/new/`) and the manual steps: copy the English text, open LinkedIn, paste into the "Start a post" composer, attach the image if any, move any external link into the first comment, and hit Post. Nothing is posted automatically.
 
 ## Post sample collection mode
 

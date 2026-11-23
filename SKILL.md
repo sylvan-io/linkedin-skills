@@ -134,9 +134,21 @@ For founders building trust with investors, hires, and design partners, the bund
 Every action-taking skill follows four steps:
 
 1. **Collect the content.** The user pastes the LinkedIn post/comment/profile text into the conversation, or uploads a screenshot of it. Read pasted text directly. For a screenshot, open the image with `Read` and transcribe the relevant text. Ask the user for anything missing (post body, comment text, top comments, engager list). Never fetch anything from the network — LinkedIn content only ever comes from the user.
-2. **Draft the content.** Use the 2026 research (hooks, timing, voice rules, algorithm heuristics) to produce a draft and show it to the user.
+2. **Draft the content.** Use the 2026 research (hooks, timing, voice rules, algorithm heuristics) to produce a draft. When the publishable text is English, also produce its Simplified Chinese review translation and show both to the user.
 3. **Wait for approval.** The user replies with "post", "yes", or suggests edits. Nothing is published automatically, ever.
-4. **Deliver the copy-paste block.** On approval, return a code block with the exact final text plus the target URL and the manual steps to publish it: open LinkedIn, paste into the composer/comment box, choose the reaction if any, and hit post. The user completes the action.
+4. **Deliver the copy-paste block.** On approval, return a code block with the exact final target-language text plus the target URL and the manual steps to publish it: open LinkedIn, paste into the composer/comment box, choose the reaction if any, and hit post. Keep any review translation outside the code block. The user completes the action.
+
+## Bilingual review for English drafts
+
+When a skill produces publishable or sendable English text, pair it with a faithful Simplified Chinese review translation. This requirement applies to top-level comments, reshare commentary, full Posts, comment replies, DM drafts, and Engager T1 DM openers. Hook options, Post sample collection analysis, Humanizer rewrites, and Repurposer remain outside this rule.
+
+- Present every English message under `English (publish)` immediately followed by `Chinese review`. Write the review body in Simplified Chinese.
+- With multiple variants, pair each English draft with its own Chinese review. Do not list all English variants first and all translations afterward.
+- The Chinese review is a translation for comprehension, not a second creative draft. Preserve meaning, tone, paragraph order, line breaks, numbers, dates, names, product names, links, emoji, hashtags, and calls to action. Do not add facts, soften claims, or introduce new phrasing.
+- The English body remains the publishing source of truth. If either side changes, update the other before showing the pair again. If translation exposes ambiguity or an error in the English, revise the English and regenerate the translation.
+- Platform character limits apply only to the target-language publish text. Chinese review text does not count toward comment, Post, or DM length limits.
+- The final publish or send code block contains only the target-language text. Put `Chinese review` outside the code block and never include it in a copy-paste instruction.
+- For English targets, output English plus Chinese review. For Chinese targets, output Chinese only. For any other target language, keep that language and do not add a Chinese translation.
 
 ## Telling the user what they need to provide
 
