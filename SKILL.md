@@ -15,7 +15,7 @@ Resolve the persistent-store paths once at the start of every `linkedin-marketin
 
 1. If the current session is an AGENT project session, use the project root reported by the host agent and read `<project-root>/AGENT.md` when that file exists. Only the singular filename `AGENT.md` is the configuration file; do not substitute `AGENTS.md`.
 2. If the session is not in an AGENT project session, or the project root has no `AGENT.md`, use the defaults below.
-3. AGENT.md may specify the four store locations in a YAML block namespaced to this bundle:
+3. AGENT.md may specify the six store locations in a YAML block namespaced to this bundle:
 
 ```yaml
 linkedin-marketing:
@@ -23,11 +23,13 @@ linkedin-marketing:
   story_dir: linkedin
   voice_dir: linkedin
   outreach_dir: linkedin/outreach
+  comment_examples_dir: linkedin
+  post_examples_dir: linkedin/post-examples
 ```
 
 4. Paths may be absolute or relative. Resolve relative paths against the project root, never against the skill directory or the caller's current working directory.
 5. If the `linkedin-marketing` block is absent, or a key is omitted or blank, use that store's default. If the block is malformed, use all defaults and mention the invalid configuration once.
-6. `connections_dir`, `story_dir`, `voice_dir`, and `outreach_dir` are directories. Resolve the files inside them with fixed filenames:
+6. `connections_dir`, `story_dir`, `voice_dir`, `outreach_dir`, `comment_examples_dir`, and `post_examples_dir` are directories. Resolve the files inside them with fixed filenames:
    - Connection index: `<CONNECTIONS_DIR>/index.md`
    - Connection snapshots: `<CONNECTIONS_DIR>/{key}.md`
    - DM archives: `<CONNECTIONS_DIR>/{key}-dms.md`
@@ -35,6 +37,8 @@ linkedin-marketing:
    - Voice profile: `<VOICE_PROFILE_FILE>` = `<VOICE_DIR>/voice-profile.md`
    - Voice rules: `<VOICE_RULES_FILE>` = `<VOICE_DIR>/voice-rules.md`
    - Outreach playbook: `<OUTREACH_DIR>/` holds `README.md`, `nurture-sequence.md`, and `scenarios/index.md`, `scenarios/_template.md`, plus scenario pack files
+   - Comment examples: `<COMMENT_EXAMPLES_FILE>` = `<COMMENT_EXAMPLES_DIR>/comment-examples.md`
+   - Post examples: `<POST_EXAMPLES_INDEX_FILE>` = `<POST_EXAMPLES_DIR>/index.md`, `<POST_EXAMPLES_TEMPLATE_FILE>` = `<POST_EXAMPLES_DIR>/_template.md`, plus one Markdown file per indexed sample
 
 | Resolved name | AGENT.md key | Default |
 |---|---|---|
@@ -42,9 +46,17 @@ linkedin-marketing:
 | `STORY_DIR` | `story_dir` | `<bundle-root>/references/` |
 | `VOICE_DIR` | `voice_dir` | `<bundle-root>/references/` |
 | `OUTREACH_DIR` | `outreach_dir` | `<bundle-root>/references/outreach/` |
+| `COMMENT_EXAMPLES_DIR` | `comment_examples_dir` | `<bundle-root>/references/` |
+| `POST_EXAMPLES_DIR` | `post_examples_dir` | `<bundle-root>/references/post-examples/` |
 | `STORY_BANK_FILE` | project-first | Project `<project-root>/linkedin/story-bank.md` if present; otherwise `<bundle-root>/references/story-bank.md` |
 | `VOICE_PROFILE_FILE` | project-first | Project `<project-root>/linkedin/voice-profile.md` if present; otherwise `<bundle-root>/references/voice-profile.md` |
 | `VOICE_RULES_FILE` | derived from `voice_dir` | `<VOICE_DIR>/voice-rules.md` |
+| `COMMENT_EXAMPLES_FILE` | derived from `comment_examples_dir` | `<COMMENT_EXAMPLES_DIR>/comment-examples.md` |
+| `BUNDLE_COMMENT_EXAMPLES_FILE` | fixed | `<bundle-root>/references/comment-examples.md` |
+| `POST_EXAMPLES_INDEX_FILE` | derived from `post_examples_dir` | `<POST_EXAMPLES_DIR>/index.md` |
+| `POST_EXAMPLES_TEMPLATE_FILE` | derived from `post_examples_dir` | `<POST_EXAMPLES_DIR>/_template.md` |
+| `BUNDLE_POST_EXAMPLES_DIR` | fixed | `<bundle-root>/references/post-examples/` |
+| `BUNDLE_POST_EXAMPLES_TEMPLATE_FILE` | fixed | `<bundle-root>/references/post-examples/_template.md` |
 
 ### Personal document precedence
 
@@ -58,6 +70,14 @@ If both a project file and a bundle file exist, the project file wins. Never mer
 
 This project-first exception is intentional and applies only to the Story Bank and Voice Profile. For connections, use the configured `CONNECTIONS_DIR` and do not redirect user data. If `VOICE_RULES_FILE` is missing, use this bundle's canonical `references/voice-rules.md` for the current run and tell the user to re-run `linkedin-project-initializer`.
 
+### Comment example precedence
+
+`BUNDLE_COMMENT_EXAMPLES_FILE` is always loaded when `linkedin-comment-drafter` runs. If `comment_examples_dir` is configured and its `comment-examples.md` exists with `filled: yes`, load that project file as an additional example source. Project examples supplement the bundle examples and take priority only for style calibration; hard rules, voice rules, user facts, and the current request always win. Never copy sample facts or distinctive wording. If the configured file is missing, empty, or `filled: no`, continue with the bundle examples silently. If it is malformed or unreadable, continue with the bundle examples and mention the problem once. If the configured directory resolves to the bundle default, load the file only once.
+
+### Post example precedence
+
+When `linkedin-post-writer` drafts a full Post, always read `<BUNDLE_POST_EXAMPLES_DIR>/index.md`. If `post_examples_dir` is configured to a path distinct from the bundle directory and `<POST_EXAMPLES_INDEX_FILE>` exists with `filled: yes`, read the project index as an additional source. Open at most 3 active sample files that match the selected formula and goal first, followed by topic, audience, and length. Project samples take priority over bundle samples; never load the entire directory by default. Samples calibrate structure and specificity only, and hard rules, voice rules, Story Bank facts, and the current request always win. Missing, empty, unfilled, or deprecated entries are skipped; a malformed configured project index or sample file is skipped with one warning. Collection mode writes only to a configured `POST_EXAMPLES_DIR` outside the bundle directory. Hook options mode and Repurposer do not read the Post sample library.
+
 The outreach playbook is reusable methodology, not a personal document. If AGENT.md supplies `outreach_dir` and that directory exists, read it; otherwise use the bundle default `<bundle-root>/references/outreach/`. A project copy wins when present; never merge or synchronize project and bundle packs automatically.
 
 If the resolved target file for a personal document does not exist, initialize it from the matching template in this bundle on first write and create parent directories as needed. If that path cannot be read or written, stop the operation and tell the user; do not silently write to the other location.
@@ -65,7 +85,7 @@ If the resolved target file for a personal document does not exist, initialize i
 ## When to use this bundle
 
 - **Setting up a new LinkedIn project workspace** → use `linkedin-project-initializer`
-- **Writing a viral post** → use `linkedin-post-writer`
+- **Writing a viral post or saving a pasted Post into a project sample library** → use `linkedin-post-writer`
 - **Commenting on someone else's post** → use `linkedin-comment-drafter`
 - **Replying to a comment** (yours or someone else's), sweeping and replying to an entire comment thread from just the pasted post content, or **replying to a LinkedIn DM** with the full conversation history as context → use `linkedin-reply-handler`
 - **Reviewing a draft before publishing, removing AI tells, scoring AI emoji density, defending a flagged rule** → use `linkedin-humanizer` (rewrite + audit pass)
@@ -84,7 +104,7 @@ This bundle registers as ONE skill; the 13 sub-skills are instruction files insi
 
 1. **Match.** When the user names a skill ("use linkedin-post-writer", "用评论草拟器", "跑一遍 humanizer") or the request hits a trigger in "When to use this bundle", resolve it to its path:
    - `skills/linkedin-project-initializer/SKILL.md` — initialize the project workspace and AGENT.md
-   - `skills/linkedin-post-writer/SKILL.md` — write a post
+   - `skills/linkedin-post-writer/SKILL.md` — write a post or save a Post sample
    - `skills/linkedin-comment-drafter/SKILL.md` — comment on someone else's post
    - `skills/linkedin-reply-handler/SKILL.md` — reply to a comment / sweep a thread / reply to a DM
    - `skills/linkedin-humanizer/SKILL.md` — remove AI tells / audit a draft
@@ -155,6 +175,8 @@ which connections have a DM archive without opening any of those files.
 | `STORY_BANK_FILE` | your own material (numbers, dates, positions) | `linkedin-interviewer` | every writing skill |
 | `VOICE_PROFILE_FILE` | your voice fingerprint | `linkedin-humanizer` profile mode | every writing skill |
 | `VOICE_RULES_FILE` | canonical editing and formatting rules | `linkedin-project-initializer` / user | every writing skill |
+| `COMMENT_EXAMPLES_FILE` | project-specific approved comments used for style calibration | user | `linkedin-comment-drafter` |
+| `POST_EXAMPLES_DIR` | project-specific Post samples plus `index.md` and `_template.md` | user / `linkedin-post-writer` collection mode | `linkedin-post-writer` full-post mode |
 | `CONNECTIONS_DIR` | third-party profile snapshots + interaction history | 5 skills (auto-write) | 3 skills (read on demand) |
 | `CONNECTIONS_DIR/{key}-dms.md` | third-party DM threads (summary + recent full text) | `linkedin-reply-handler` DM mode | `linkedin-reply-handler` DM mode |
 | `OUTREACH_DIR` | T1-T4 stage machine + scenario packs for one-to-one outreach | user / pack author | `linkedin-reply-handler` DM mode, `linkedin-engager-analytics` opener, `linkedin-comment-drafter` public touch |
@@ -333,6 +355,10 @@ Decode the `commentUrn` fragment to find which comment a permalink targets (this
 - `references/founder-topics.md` — founders-edition angle library (A1-A10)
 - `STORY_BANK_FILE` — the user's material bank (filled by `linkedin-interviewer`; default: `references/story-bank.md`)
 - `VOICE_PROFILE_FILE` — the user's voice fingerprint (filled by `linkedin-humanizer` profile mode; default: `references/voice-profile.md`)
+- `BUNDLE_COMMENT_EXAMPLES_FILE` — canonical T1-T7 comment examples and weak-to-rewrite contrasts (`references/comment-examples.md`)
+- `COMMENT_EXAMPLES_FILE` — optional project examples supplementing the bundle file; resolved from `comment_examples_dir`
+- `BUNDLE_POST_EXAMPLES_DIR` — built-in indexed Post samples for comments, reposts, likes, and saves (`references/post-examples/`)
+- `POST_EXAMPLES_DIR` — optional project Post sample library; `post_examples_dir` is the only valid collection write target
 - `CONNECTIONS_DIR` — third-party profile snapshots + interaction history (auto-written, read on demand; default: `references/connections/`); `{key}-dms.md` sibling files hold DM threads (rolling summary + recent full text, reply-handler DM mode only); the `## Nurture` block on each profile persists outreach stage and scenario state
 - `OUTREACH_DIR` — one-to-one outreach playbook: T1-T4 stage machine (`nurture-sequence.md`) and pluggable scenario packs (`scenarios/`; default: `references/outreach/`)
 - `references/untrusted-content.md` — how to treat pasted third-party content

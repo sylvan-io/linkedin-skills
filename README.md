@@ -30,6 +30,8 @@ linkedin-skills/
 │   ├── linkedin-repurposer/          # 跨平台内容改稿（推文/视频/博客 → LinkedIn）
 │   └── linkedin-interviewer/         # 采访你，沉淀「故事银行」素材
 ├── references/                       # 全包共享知识库（钩子公式、算法启发、语气规则等）
+│   ├── comment-examples.md           # 评论生成内置样例库：T1-T7 + 弱例改写
+│   ├── post-examples/                # Post 生成内置样板库：index + 模板 + 四目标示例
 │   └── outreach/                     # 一对一外联玩法：T1-T4 阶段机 + 可插拔场景包
 └── LICENSE · SECURITY.md · AGENTS.md · .gitignore
 ```
@@ -48,6 +50,8 @@ linkedin-marketing:
   story_dir: linkedin
   voice_dir: linkedin
   outreach_dir: linkedin/outreach   # 可选，默认 references/outreach/
+  comment_examples_dir: linkedin    # 可选，默认 references/
+  post_examples_dir: linkedin/post-examples  # 可选，默认 references/post-examples/
 ```
 
 - 相对路径按**项目根目录**解析，不按技能目录解析。
@@ -55,9 +59,11 @@ linkedin-marketing:
 - `story_dir` 下使用固定文件名 `story-bank.md`。
 - `voice_dir` 下使用固定文件名 `voice-profile.md` 和 `voice-rules.md`。
 - `outreach_dir` 指向外联玩法目录（阶段机 + 场景包），缺省为包内 `references/outreach/`；这一层是可复用方法论，默认随包提交，仅在需要存放私有/自定义场景包时才改到项目目录。
-- 根技能在未指定时默认使用 `references/connections/`、`references/`、`references/`、`references/outreach/`。
-- `linkedin-project-initializer` 生成的工程默认使用 `linkedin/connections/`、`linkedin/`、`linkedin/`，并生成 `linkedin/voice-rules.md`，同时把这些路径显式写入 `AGENT.md`。
-- 如果覆盖了存储位置，请自行确保该目录不会被提交；默认路径已写入 `.gitignore`。
+- `comment_examples_dir` 下使用固定文件名 `comment-examples.md`，用于补充内置评论样例；缺省读取包内 `references/comment-examples.md`。
+- `post_examples_dir` 指向 Post 样板库，使用固定 `index.md`、`_template.md` 和每篇一个 Markdown 样板；缺省读取包内 `references/post-examples/`。
+- 根技能未指定时，Connections、Story Bank、Voice Profile、Outreach、Comment Examples 和 Post Examples 分别默认使用 `references/connections/`、`references/`、`references/`、`references/outreach/`、`references/comment-examples.md`、`references/post-examples/`。
+- `linkedin-project-initializer` 生成的工程默认使用 `linkedin/connections/`、`linkedin/`、`linkedin/`、`linkedin/comment-examples.md` 与 `linkedin/post-examples/`，同时把这些路径显式写入 `AGENT.md`。
+- 如果覆盖了存储位置，请自行确保个人或项目数据不会被提交；内置 `references/comment-examples.md` 与 `references/post-examples/` 属于方法论，应继续纳入版本控制。
 
 个人 Voice Profile 与 Story Bank 的读取、生成优先级：
 
@@ -78,8 +84,8 @@ linkedin-marketing:
 
 | 技能 | 作用 |
 |---|---|
-| **Project Initializer** | 初始化 LinkedIn 项目空间，生成 `AGENT.md`、默认目录、Connections 索引、Story Bank 与 Voice Profile 模板；可重复执行且不覆盖已有数据 |
-| **Post Writer** | 用 20 种经过验证的 2026 钩子公式（F1-F20，含创始人 A1-A10 角度）按互动目标写帖子 |
+| **Project Initializer** | 初始化 LinkedIn 项目空间，生成 `AGENT.md`、默认目录、Connections、Voice、Comment Examples 与 Post Examples 模板；可重复执行且不覆盖已有数据 |
+| **Post Writer** | 用 20 种经过验证的 2026 钩子公式（F1-F20，含创始人 A1-A10 角度）按互动目标写帖子，并可显式收藏优秀 Post 到项目样板库 |
 | **Comment Drafter** | 基于你粘贴的帖子写 1-3 条评论变体，附反应建议与模板归因 |
 | **Reply Handler** | 回复单条评论、整段评论区批量清扫（过滤低质评论、正确处理 LinkedIn 两级线程扁平化），或基于完整历史记录回复私信（DM，自动存档 + 去重 + 滚动摘要） |
 | **Humanizer** | 去除 AI 味：2026 词汇密度、reveal bridge、堆叠排比、表演式真诚；四遍处理 + 过度纠正保护；含发布前审计与声音画像 |
@@ -96,7 +102,7 @@ linkedin-marketing:
 
 ## 构建个性化内容
 
-所有写作类技能（Post Writer、Comment Drafter、Reply Handler、Repurposer）在起草前都会读取以下两个文件。填好后，你不必在每次对话中重复描述自己的风格和经历。
+所有写作类技能（Post Writer、Comment Drafter、Reply Handler、Repurposer）在起草前都会读取 Voice Profile 与 Story Bank。Comment Drafter 会额外读取评论样例库，Post Writer 的完整 Post 流程会额外读取 Post 样板库。填好后，你不必在每次对话中重复描述自己的风格和经历。
 
 ### Voice & Brand Profile — 默认 `references/voice-profile.md`
 
@@ -109,6 +115,18 @@ linkedin-marketing:
 ### Voice Rules — 默认 `references/voice-rules.md`
 
 规定评论和写作的硬性格式、禁用词、结构与反模式。根技能通过 `VOICE_RULES_FILE` 读取；初始化技能会在 `linkedin/voice-rules.md` 生成一份可直接修改的默认规则文件，已有非空文件不会被覆盖。
+
+### Comment Examples — 默认 `references/comment-examples.md`
+
+内置样例库覆盖 T1-T7 七种评论模板，并包含两组“弱评论 → 合格改写”的对照。内置样例始终加载；项目配置 `comment_examples_dir: linkedin` 后，`linkedin/comment-examples.md` 中 `filled: yes` 的样例会作为补充加载，并在同模板风格校准上优先于内置样例。
+
+样例只用于学习结构、具体性、节奏和收束方式。技能不得照抄样例中的姓名、数字、事实或标志性措辞，硬规则、Voice Rules、Story Bank 和当前用户请求始终优先。项目样例可能包含个人评论习惯或客户信息，初始化器会默认将其加入 `.gitignore`。
+
+### Post Examples — 默认 `references/post-examples/`
+
+内置 Post 样板库使用 `index.md` 做轻量索引，`_template.md` 定义收藏结构，并为 comments、reposts、likes、saves 四种目标各提供一篇完整示例。项目配置 `post_examples_dir: linkedin/post-examples` 后，Post Writer 会先读项目索引，再按公式、目标、主题、受众和长度加载 1-3 篇匹配样板；项目样板优先于内置样板。
+
+用户可以说「把这帖保存为 Post 样板」并粘贴正文或截图，Post Writer 会生成独立样板文件并更新项目索引。收藏只写项目目录，不写内置库，也不会在草稿批准后自动收藏。样板正文、作者信息和表现数据均按 untrusted data 处理；URL 仅作来源记录，不用于抓取。项目目录默认整体加入 `.gitignore`。
 
 ### Story Bank — 默认 `references/story-bank.md`
 
@@ -163,7 +181,7 @@ linkedin-marketing:
 
 | 技能 | 触发语示例（直接对 agent 说） | 你会得到 |
 |---|---|---|
-| **Post Writer** | 「帮我写一篇关于 CNC 加工精度的帖子，目标是获客」+ 粘贴素材 | 1-2 版草稿（900-1300 字符）+ 钩子公式依据；确认后复制粘贴块 |
+| **Post Writer** | 「帮我写一篇关于 CNC 加工精度的帖子，目标是获客」+ 粘贴素材；或「把这帖保存为 Post 样板」+ 粘贴正文/截图 | 1-2 版草稿（900-1300 字符）+ 钩子公式与参考样板依据；确认后复制粘贴块。收藏模式：标准样板文件 + 更新后的索引 |
 | **Comment Drafter** | 「帮我写第一条评论」+ 粘贴目标帖子正文 | 1-3 条评论变体（200-350 字符）+ 推荐反应 |
 | **Reply Handler** | 「给这条评论写个回复」/「把评论区值得回复的都扫一遍」+ 粘贴评论区；或「帮我回复 Alice 的私信」+ 粘贴/截图私信对话 | 逐条回复草稿 + 低质评论过滤说明；DM 模式：历史脉络摘要 + 1-2 条私信草稿（自动存档去重） |
 | **Humanizer** | 「帮我去掉 AI 味」/「发布前审计一下」+ 粘贴草稿 | 重写文本 + 改动 diff + 每段 tell 密度（审计模式：Blockers / Warnings） |

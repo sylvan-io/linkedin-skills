@@ -1,9 +1,6 @@
-# Examples — LinkedIn Comment Drafter
+# Examples Moved
 
-## Example invocation
-
-> User: "Comment on this: https://www.linkedin.com/posts/<author-handle>_activity-<id>"
->
-> Skill: [parses URL, fetches post, detects closing question "Seen this in your market?", drafts 3 variants]
->
-> Skill returns: T2 Answer-the-Closing-Question variant as primary pick, with T1 Missing-Piece as backup, reaction `INTEREST`, one-line rationale, and approval prompt.
+The canonical comment example bank is now
+`../../../references/comment-examples.md`. It includes T1-T7 examples and
+weak-to-rewrite contrasts. Content still comes only from the user; a bare post
+URL is not readable content.

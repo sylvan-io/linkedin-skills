@@ -1,6 +1,6 @@
 # 7 Comment Templates (2026)
 
-Each template has a fill-in skeleton, a psychological reason it works, and a real example from the reference library.
+Each template has a fill-in skeleton, a psychological reason it works, and an illustrative example from the reference library.
 
 ## Contents
 
@@ -28,12 +28,12 @@ when [their-condition], the real differentiator is [specific-skill], not [their-
 
 **Why it works:** Agrees on the premise, then sharpens it with one piece the author didn't name. Authors reply because you've extended their thinking, not restated it.
 
-**Real example (Apr 2026, got a personal reply from the author 22h later):**
+**Illustrative example:**
 > the tools-as-equalizer argument misses one piece.. the moat moved from tools to taste.
 >
 > when everyone has the same LLM and the same automation platform, the differentiator is whether you actually know what your customer wants and have the conviction to point the tool at the right thing.
 
-**Hit rate:** highest in 2026 testing. Author-reply probability ~15%.
+**Use when:** the post states a thesis but leaves out the factor that changes the conclusion.
 
 ---
 
@@ -50,7 +50,7 @@ when [their-condition], the real differentiator is [specific-skill], not [their-
 
 **Why it works:** Authors LOVE when someone actually answers the question instead of pivoting to their own hot take. You become memorable as "the person who engaged with my actual question."
 
-**Real example:**
+**Illustrative example:**
 > seeing exactly this in B2B content and marketing.. our team of six with AI ships what a 30-person agency used to charge for, and the clients figured it out faster than the agencies did.
 
 ---
@@ -154,20 +154,20 @@ curious if you've seen [specific case].
 - Emoji-only replies
 - Tagging a third party to farm reach
 - Any comment mentioning your own product by name on a third-party post
-- Em dashes (`—`), rule-of-three lists, "it's not X, it's Y"
+- Em dashes above the density cap, rule-of-three lists, "it's not X, it's Y"
 - Comments over 500 chars unless answering a direct question with depth
 
 ## Reaction type heuristics
 
 | Template | Default reaction |
 |---|---|
-| T1 Missing-Piece | `INTEREST` |
-| T2 Answer-the-Closing-Question | `APPRECIATION` |
-| T3 Data-First | `INTEREST` |
-| T4 Practitioner Observation | `INTEREST` |
-| T5 Counter-with-Concession | `INTEREST` (never `LIKE` — reads passive) |
-| T6 Quotable-Reframe | `APPRECIATION` |
-| T7 Ask-a-Sharper-Question | `INTEREST` |
+| T1 Missing-Piece | `INSIGHTFUL` |
+| T2 Answer-the-Closing-Question | `INSIGHTFUL` |
+| T3 Data-First | `INSIGHTFUL` |
+| T4 Practitioner Observation | `INSIGHTFUL` |
+| T5 Counter-with-Concession | `INSIGHTFUL` (never `LIKE`, which reads passive) |
+| T6 Quotable-Reframe | `CELEBRATE` |
+| T7 Ask-a-Sharper-Question | `INSIGHTFUL` |
 
 React before commenting, pause 8-15s, then comment. Spacing makes the interaction look human.
 
